@@ -14,7 +14,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="280,19,0,0" TextWrapping="Wrap" Text="People You May Know" VerticalAlignment="Top" Height="35" Width="252" TextAlignment="Center" FontSize="22" FontWeight="Bold"/>
         <TextBlock HorizontalAlignment="Left" Height="20" Margin="183,77,0,0" TextWrapping="Wrap" Text="Graph File :" VerticalAlignment="Top" Width="65" RenderTransformOrigin="1.557,0.5"/>
         <TextBlock HorizontalAlignment="Left" Height="20" Margin="183,102,0,0" TextWrapping="Wrap" Text="Algorithm :" VerticalAlignment="Top" Width="65"/>
-        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="129" Margin="183,127,0,0" Stroke="Black" VerticalAlignment="Top" Width="424"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="129" Margin="183,127,0,0" Stroke="Black" VerticalAlignment="Top" Width="424" Visibility="Hidden"/>
         <TextBlock HorizontalAlignment="Left" Height="20" Margin="183,270,0,0" TextWrapping="Wrap" Text="Choose Account :" VerticalAlignment="Top" Width="99"/>
         <TextBlock HorizontalAlignment="Left" Height="20" Margin="183,295,0,0" TextWrapping="Wrap" Text="Explore Friends With :" VerticalAlignment="Top" Width="120"/>
         <Button Content="Submit" HorizontalAlignment="Left" Height="33" Margin="183,320,0,0" VerticalAlignment="Top" Width="65" Click="Button_Click"/>
