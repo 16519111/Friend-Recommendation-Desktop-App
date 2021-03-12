@@ -1,0 +1,15 @@
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\bin\Debug\Tubes2_App.exe.config
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\bin\Debug\Tubes2_App.exe
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\bin\Debug\Tubes2_App.pdb
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\Tubes2_App.csprojAssemblyReference.cache
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\MainWindow.g.cs
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\App.g.cs
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\Tubes2_App_MarkupCompile.cache
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\Tubes2_App_MarkupCompile.lref
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\MainWindow.baml
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\Tubes2_App.g.resources
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\Tubes2_App.Properties.Resources.resources
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\Tubes2_App.csproj.GenerateResource.cache
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\Tubes2_App.csproj.CoreCompileInputs.cache
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\Tubes2_App.exe
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\Tubes2_App.pdb
