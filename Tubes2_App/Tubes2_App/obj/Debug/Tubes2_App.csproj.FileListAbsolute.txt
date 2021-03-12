@@ -13,3 +13,8 @@ D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\Tubes2_A
 D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\Tubes2_App.csproj.CoreCompileInputs.cache
 D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\Tubes2_App.exe
 D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\Tubes2_App.pdb
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\bin\Debug\AutomaticGraphLayout.dll
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\bin\Debug\AutomaticGraphLayout.Drawing.dll
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\bin\Debug\Microsoft.Msagl.GraphViewerGdi.dll
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\bin\Debug\Microsoft.Msagl.WpfGraphControl.dll
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\Tubes2_App.csproj.CopyComplete
