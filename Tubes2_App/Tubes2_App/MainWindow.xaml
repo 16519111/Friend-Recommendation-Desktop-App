@@ -19,7 +19,7 @@
         <TextBlock HorizontalAlignment="Left" Height="20" Margin="183,295,0,0" TextWrapping="Wrap" Text="Explore Friends With :" VerticalAlignment="Top" Width="120"/>
         <Button Content="Submit" HorizontalAlignment="Left" Height="33" Margin="183,320,0,0" VerticalAlignment="Top" Width="65" Click="Button_Click"/>
         <TextBlock HorizontalAlignment="Left" Height="20" Margin="183,375,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190"><Run FontWeight="Bold" Text="Friends Recommendation For A :"/></TextBlock>
-        <Button Content="Browse" HorizontalAlignment="Left" Height="20" Margin="253,77,0,0" VerticalAlignment="Top" Width="50" Click="Button_Click_1"/>
+        <Button Content="Browse" HorizontalAlignment="Left" Height="20" Margin="253,77,0,0" VerticalAlignment="Top" Width="50" Click="Browse_File_Button"/>
         <RadioButton Content="DFS" HorizontalAlignment="Left" Height="20" Margin="253,102,0,0" VerticalAlignment="Top" Width="50" Checked="RadioButton_Checked"/>
         <RadioButton Content="BFS" HorizontalAlignment="Left" Height="20" Margin="303,103,0,0" VerticalAlignment="Top" Width="43"/>
         <ComboBox HorizontalAlignment="Left" Height="20" Margin="313,270,0,0" VerticalAlignment="Top" Width="76"/>
