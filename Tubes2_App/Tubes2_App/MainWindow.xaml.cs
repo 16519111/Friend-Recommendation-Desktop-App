@@ -32,19 +32,53 @@ namespace Tubes2_App
         HashSet<string> uniqueAccounts = new HashSet<string>();
         string currentAccount;
         string currentTargetFriend;
-        int lastIndexCurrentAccount = -1;
-        int lastIndexCurrentTargetFriend = -1;
+        int lastIndexCurrentAccount;
+        int lastIndexCurrentTargetFriend;
         Dictionary<string, List<string>> adjacencyList;
+        List<string> exploreRoute;
+        TextBlock descriptionTextBlock;
 
         // Constructor
         public MainWindow()
         {
             InitializeComponent();
+            lastIndexCurrentAccount = -1;
+            lastIndexCurrentTargetFriend = -1;
+            exploreRoute = new List<string>();
+            descriptionTextBlock = new TextBlock();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            bool isExplorable;
+
             Friend_Recommendation();
+
+
+            isExplorable = BFS_Explore();
+
+            if (isExplorable)
+            {
+                descriptionTextBlock.Inlines.Add(new Run("\nFriend Exploration Path Found"));
+                for (int i=0;i<exploreRoute.Count;i++)
+                {
+                    if (i == 0)
+                    {
+                        descriptionTextBlock.Inlines.Add(new Run("\n" + exploreRoute[i]));
+                    }
+                    else
+                    {
+                        descriptionTextBlock.Inlines.Add(new Run(" -> " + exploreRoute[i]));
+                    }
+                }
+            }
+            else
+            {
+                descriptionTextBlock.Inlines.Add(new Run("\nFriend Exploration Path Not Found"));
+            }
+            // Merender ulang komponen XAML friendCanvas
+            friendCanvas.Children.Clear();
+            friendCanvas.Children.Add(descriptionTextBlock);
         }
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
@@ -182,9 +216,8 @@ namespace Tubes2_App
 
         private void Friend_Recommendation()
         {
-            // Inisiasi dan mencetak judul
-            TextBlock newFriendTextBlock = new TextBlock();
-            newFriendTextBlock.Inlines.Add(new Bold(new Run("Friend Recommendations for " + currentAccount)));
+            // Mencetak judul
+            descriptionTextBlock.Inlines.Add(new Bold(new Run("Friend Recommendations for " + currentAccount)));
 
             HashSet<string> uniqueFriendRecommendations = new HashSet<string>();
 
@@ -206,12 +239,65 @@ namespace Tubes2_App
             // Mencetak Friend Recommendation ke layar
             foreach (string friendRecommendation in uniqueFriendRecommendations)
             {
-                newFriendTextBlock.Inlines.Add(new Run("\n" + friendRecommendation));
+                descriptionTextBlock.Inlines.Add(new Run("\n" + friendRecommendation));
+            }
+        }
+
+        private bool BFS_Explore()
+        {
+            Queue<string> BFSQueue = new Queue<string>();
+            Dictionary<string, bool> visited = new Dictionary<string, bool>();
+            bool solutionFound = false;
+            List<string> expandNode;
+            Dictionary<string, List<string>> Route = new Dictionary<string, List<string>>();
+            string expandAccount;
+
+            foreach (string node in uniqueAccounts)
+            {
+                visited[node] = false;
             }
 
-            // Merender ulang komponen XAML friendCanvas
-            friendCanvas.Children.Clear();
-            friendCanvas.Children.Add(newFriendTextBlock);
+            expandAccount = currentAccount;
+            while (!solutionFound)
+            {
+                visited[expandAccount] = true;
+                expandNode = adjacencyList[expandAccount];
+                for (int i=0;i<expandNode.Count;i++)
+                {
+                    string currentFocusAccount = expandNode[i];
+                    if (!visited[currentFocusAccount])
+                    {
+                        Route[currentFocusAccount] = new List<string>();
+                        if (Route.ContainsKey(expandAccount))
+                        {
+                            Route[currentFocusAccount] = Route[currentFocusAccount].Concat(Route[expandAccount]).ToList();
+                        }
+                        Route[currentFocusAccount].Add(expandAccount);
+                        BFSQueue.Enqueue(currentFocusAccount);
+                        if (currentFocusAccount == currentTargetFriend)
+                        {
+                            Route[currentFocusAccount].Add(currentFocusAccount);
+                            exploreRoute = Route[currentFocusAccount];
+                            solutionFound = true;
+                            break;
+                        }
+                    }
+                }
+                if(BFSQueue.Count != 0)
+                {
+                    expandAccount = BFSQueue.Dequeue();
+                }
+                else
+                {
+                    break;
+                }
+            }
+            return solutionFound;
+        }
+
+        private void DFS_Explore()
+        {
+
         }
     }
 }
