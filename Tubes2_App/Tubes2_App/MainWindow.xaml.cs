@@ -25,13 +25,17 @@ using Size = System.Windows.Size;
 
 namespace Tubes2_App
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        // Attributes
         string[] lines;
+        HashSet<string> uniqueAccounts = new HashSet<string>();
+        string currentAccount;
+        string currentTargetFriend;
+        int lastIndexCurrentAccount = -1;
+        int lastIndexCurrentTargetFriend = -1;
 
+        // Constructor
         public MainWindow()
         {
             InitializeComponent();
@@ -39,7 +43,11 @@ namespace Tubes2_App
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            TextBlock newFriendTextBlock = new TextBlock();
+            newFriendTextBlock.Inlines.Add(new Bold(new Run("Friend Recommendations for " + currentAccount)));
 
+            friendCanvas.Children.Clear();
+            friendCanvas.Children.Add(newFriendTextBlock);
         }
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
@@ -65,7 +73,6 @@ namespace Tubes2_App
                 // Memunculkan dialog untuk testing
                 // System.Windows.Forms.MessageBox.Show(lines[0], "Error Title", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
-                // SetupToolbar();
                 MakeGraph();
                 System.Windows.Controls.Image myImage3 = new System.Windows.Controls.Image();
                 string path = Environment.CurrentDirectory;
@@ -79,31 +86,75 @@ namespace Tubes2_App
                 myImage3.Height = 200;
 
                 graphCanvas.Children.Add(myImage3);
+
+                handleUpdateComboBox();
             }
         }
 
         private void MakeGraph()
         {
-            //create a viewer object 
-            Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
-            //create a graph object 
-            Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
-            //create the graph content
+            // Create Graph Object 
+            Graph graph = new Graph("graph");
+
+            // Create Graph Content
             for (int i = 1; i < lines.Length; i++)
             {
-                var edge = graph.AddEdge(lines[i][0].ToString(), lines[i][2].ToString());
+                string source = lines[i][0].ToString();
+                string dest = lines[i][2].ToString();
+
+                // Styling Graph
+                var edge = graph.AddEdge(source, dest);
                 edge.Attr.ArrowheadAtSource = ArrowStyle.None;
                 edge.Attr.ArrowheadAtTarget = ArrowStyle.None;
+                Node src = graph.FindNode(source);
+                Node target = graph.FindNode(dest);
+                src.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Circle;
+                target.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Circle;
+
+                // Menambah akun unik ke uniqueAccounts
+                uniqueAccounts.Add(source);
+                uniqueAccounts.Add(dest);
             }
             
-            // Creating Graph Image
+            // Create Graph Image
             Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(graph);
             renderer.CalculateLayout();
-            int width = 100;
+            int width = 120;
             Bitmap bitmap = new Bitmap(width, (int)(graph.Height *
             (width / graph.Width)), System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
             renderer.Render(bitmap);
             bitmap.Save("graph.png");
+        }
+
+        private void handleUpdateComboBox()
+        {
+            foreach (string account in uniqueAccounts)
+            {
+                Choose_Account_ComboBox.Items.Add(account);
+                Explore_ComboBox.Items.Add(account);
+            }
+        }
+
+        private void Choose_Account_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(lastIndexCurrentTargetFriend >= 0)
+            {
+                Explore_ComboBox.Items.Insert(lastIndexCurrentTargetFriend, currentAccount);  
+            }
+            currentAccount = Choose_Account_ComboBox.SelectedItem.ToString();
+            lastIndexCurrentTargetFriend = Explore_ComboBox.Items.IndexOf(currentAccount);
+            Explore_ComboBox.Items.Remove(currentAccount);
+        }
+
+        private void Explore_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lastIndexCurrentAccount >= 0)
+            {
+                Choose_Account_ComboBox.Items.Insert(lastIndexCurrentAccount, currentTargetFriend);
+            }
+            currentTargetFriend = Explore_ComboBox.SelectedItem.ToString();
+            lastIndexCurrentAccount = Choose_Account_ComboBox.Items.IndexOf(currentTargetFriend);
+            Choose_Account_ComboBox.Items.Remove(currentTargetFriend);
         }
     }
 }
