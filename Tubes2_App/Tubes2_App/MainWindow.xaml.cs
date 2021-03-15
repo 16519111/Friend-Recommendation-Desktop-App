@@ -34,6 +34,7 @@ namespace Tubes2_App
         string currentTargetFriend;
         int lastIndexCurrentAccount = -1;
         int lastIndexCurrentTargetFriend = -1;
+        Dictionary<string, List<string>> adjacencyList;
 
         // Constructor
         public MainWindow()
@@ -43,11 +44,7 @@ namespace Tubes2_App
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            TextBlock newFriendTextBlock = new TextBlock();
-            newFriendTextBlock.Inlines.Add(new Bold(new Run("Friend Recommendations for " + currentAccount)));
-
-            friendCanvas.Children.Clear();
-            friendCanvas.Children.Add(newFriendTextBlock);
+            Friend_Recommendation();
         }
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
@@ -84,10 +81,34 @@ namespace Tubes2_App
                 myImage3.Source = bi3;
                 myImage3.Width = 200;
                 myImage3.Height = 200;
-
                 graphCanvas.Children.Add(myImage3);
 
+                generateAdjacencyList();
+
+                // handler untuk event ChangeComboBox
                 handleUpdateComboBox();
+            }
+        }
+
+        private void generateAdjacencyList()
+        {
+            int countLines = lines.Length;
+            adjacencyList = new Dictionary<string, List<string>>();
+            for (int i=1;i<countLines;i++)
+            {
+                string source = lines[i][0].ToString();
+                string dest = lines[i][2].ToString();
+
+                if (!adjacencyList.ContainsKey(source))
+                {
+                    adjacencyList[source] = new List<string>();
+                }
+                if (!adjacencyList.ContainsKey(dest))
+                {
+                    adjacencyList[dest] = new List<string>();
+                }
+                adjacencyList[source].Add(dest);
+                adjacencyList[dest].Add(source);
             }
         }
 
@@ -137,6 +158,7 @@ namespace Tubes2_App
 
         private void Choose_Account_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // Logic untuk handleSelectionChange (event) Choose_Account
             if(lastIndexCurrentTargetFriend >= 0)
             {
                 Explore_ComboBox.Items.Insert(lastIndexCurrentTargetFriend, currentAccount);  
@@ -148,6 +170,7 @@ namespace Tubes2_App
 
         private void Explore_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // Logic untuk handleSelectionChange (event) Explore
             if (lastIndexCurrentAccount >= 0)
             {
                 Choose_Account_ComboBox.Items.Insert(lastIndexCurrentAccount, currentTargetFriend);
@@ -155,6 +178,40 @@ namespace Tubes2_App
             currentTargetFriend = Explore_ComboBox.SelectedItem.ToString();
             lastIndexCurrentAccount = Choose_Account_ComboBox.Items.IndexOf(currentTargetFriend);
             Choose_Account_ComboBox.Items.Remove(currentTargetFriend);
+        }
+
+        private void Friend_Recommendation()
+        {
+            // Inisiasi dan mencetak judul
+            TextBlock newFriendTextBlock = new TextBlock();
+            newFriendTextBlock.Inlines.Add(new Bold(new Run("Friend Recommendations for " + currentAccount)));
+
+            HashSet<string> uniqueFriendRecommendations = new HashSet<string>();
+
+            // Pencarian Friend Recommendation berdasarkan mutual friends
+            var currentNode = adjacencyList[currentAccount];
+            for (int i = 0; i < currentNode.Count; i++)
+            {
+                var currentMutualNode = adjacencyList[currentNode[i]];
+                for (int j = 0; j < currentMutualNode.Count; j++)
+                {
+                    var candidateFriend = currentMutualNode[j];
+                    if (candidateFriend != currentAccount && !currentNode.Contains(candidateFriend))
+                    {
+                        uniqueFriendRecommendations.Add(candidateFriend);
+                    }
+                }
+            }
+
+            // Mencetak Friend Recommendation ke layar
+            foreach (string friendRecommendation in uniqueFriendRecommendations)
+            {
+                newFriendTextBlock.Inlines.Add(new Run("\n" + friendRecommendation));
+            }
+
+            // Merender ulang komponen XAML friendCanvas
+            friendCanvas.Children.Clear();
+            friendCanvas.Children.Add(newFriendTextBlock);
         }
     }
 }
