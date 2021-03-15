@@ -14,6 +14,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Msagl.WpfGraphControl;
+using System.Windows.Controls.Primitives;
+using Microsoft.Msagl.Core.Routing;
+using Microsoft.Msagl.Drawing;
+using Microsoft.Win32;
+using Color = Microsoft.Msagl.Drawing.Color;
+using ModifierKeys = System.Windows.Input.ModifierKeys;
+using Size = System.Windows.Size;
 
 namespace Tubes2_App
 {
@@ -22,6 +30,8 @@ namespace Tubes2_App
     /// </summary>
     public partial class MainWindow : Window
     {
+        string[] lines;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -39,7 +49,7 @@ namespace Tubes2_App
 
         private void Browse_File_Button(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog fileDialog = new OpenFileDialog();
+            System.Windows.Forms.OpenFileDialog fileDialog = new System.Windows.Forms.OpenFileDialog();
             fileDialog.DefaultExt = ".txt"; // Required file extension 
             fileDialog.Filter = "Text documents (.txt)|*.txt"; // Optional file extensions
             fileDialog.Multiselect = false;
@@ -50,49 +60,50 @@ namespace Tubes2_App
                 string sFileName = fileDialog.FileName;
 
                 // Baca line per line kemudian dimasukkan ke array of string lines
-                string[] lines = System.IO.File.ReadAllLines(@sFileName);
+                lines = System.IO.File.ReadAllLines(@sFileName);
 
                 // Memunculkan dialog untuk testing
-                System.Windows.Forms.MessageBox.Show(lines[0], "Error Title", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                // System.Windows.Forms.MessageBox.Show(lines[0], "Error Title", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
-                // ------------------------ GRAPH TESTER --------------------------- //
-                System.Windows.Forms.Form form = new System.Windows.Forms.Form();
-                //create a viewer object 
-                Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
-                //create a graph object 
-                Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
-                //create the graph content
-                for (int i=1;i<lines.Length;i++)
-                {
-                    graph.AddEdge(lines[i][0].ToString(), lines[i][2].ToString());
-                }
-                //graph.AddEdge("A", "B");
-                //graph.AddEdge("B", "C");
-                //graph.AddEdge("A", "C").Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-                //graph.FindNode("A").Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
-                //graph.FindNode("B").Attr.FillColor = Microsoft.Msagl.Drawing.Color.MistyRose;
-                //Microsoft.Msagl.Drawing.Node c = graph.FindNode("C");
-                //c.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PaleGreen;
-                //c.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Diamond;
-                //bind the graph to the viewer 
-                //viewer.Graph = graph;
-                ////associate the viewer with the form 
-                //form.SuspendLayout();
-                //viewer.Dock = System.Windows.Forms.DockStyle.Fill;
-                //this.graphBox.
-                //form.Controls.Add(viewer);
-                //form.ResumeLayout();
-                ////show the form 
-                //form.ShowDialog();
-                Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(graph);
-                renderer.CalculateLayout();
-                int width = 50;
-                Bitmap bitmap = new Bitmap(width, (int)(graph.Height *
-                (width / graph.Width)));
-                renderer.Render(bitmap);
-                bitmap.Save("test.png");
+                // SetupToolbar();
+                MakeGraph();
+                System.Windows.Controls.Image myImage3 = new System.Windows.Controls.Image();
+                string path = Environment.CurrentDirectory;
+                BitmapImage bi3 = new BitmapImage();
+                bi3.BeginInit();
+                bi3.UriSource = new Uri(@path + "/graph.png", UriKind.Absolute);
+                bi3.EndInit();
+                myImage3.Stretch = Stretch.None;
+                myImage3.Source = bi3;
+                myImage3.Width = 200;
+                myImage3.Height = 200;
+
+                graphCanvas.Children.Add(myImage3);
             }
-            this.graphBox.Visibility = Visibility.Visible;
+        }
+
+        private void MakeGraph()
+        {
+            //create a viewer object 
+            Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
+            //create a graph object 
+            Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
+            //create the graph content
+            for (int i = 1; i < lines.Length; i++)
+            {
+                var edge = graph.AddEdge(lines[i][0].ToString(), lines[i][2].ToString());
+                edge.Attr.ArrowheadAtSource = ArrowStyle.None;
+                edge.Attr.ArrowheadAtTarget = ArrowStyle.None;
+            }
+            
+            // Creating Graph Image
+            Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(graph);
+            renderer.CalculateLayout();
+            int width = 100;
+            Bitmap bitmap = new Bitmap(width, (int)(graph.Height *
+            (width / graph.Width)), System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            renderer.Render(bitmap);
+            bitmap.Save("graph.png");
         }
     }
 }
