@@ -1,28 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Microsoft.Msagl.WpfGraphControl;
-using System.Windows.Controls.Primitives;
-using Microsoft.Msagl.Core.Routing;
 using Microsoft.Msagl.Drawing;
-using Microsoft.Win32;
-using Color = Microsoft.Msagl.Drawing.Color;
-using ModifierKeys = System.Windows.Input.ModifierKeys;
-using Size = System.Windows.Size;
 
 namespace Tubes2_App
 {
