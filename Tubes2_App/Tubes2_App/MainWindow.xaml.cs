@@ -66,7 +66,8 @@ namespace Tubes2_App
 
                 if (isExplorable)
                 {
-                    descriptionTextBlock.Inlines.Add(new Run("\nFriend Exploration Path Found"));
+                    descriptionTextBlock.Inlines.Add(new Bold(new Run("\n\nNama akun : " + currentAccount + " dan " + currentTargetFriend)));
+                    descriptionTextBlock.Inlines.Add(new Run("\n" + (exploreRoute.Count-2).ToString() + " degree connection"));
                     for (int i=0;i<exploreRoute.Count;i++)
                     {
                         if (i == 0)
@@ -81,7 +82,9 @@ namespace Tubes2_App
                 }
                 else
                 {
-                    descriptionTextBlock.Inlines.Add(new Run("\nFriend Exploration Path Not Found"));
+                    descriptionTextBlock.Inlines.Add(new Bold(new Run("\n\nNama akun : " + currentAccount + " dan " + currentTargetFriend)));
+                    descriptionTextBlock.Inlines.Add(new Run("\nTidak ada jalur koneksi yang tersedia"));
+                    descriptionTextBlock.Inlines.Add(new Run("\nAnda harus memulai koneksi baru itu sendiri"));
                 }
 
                 // Merender ulang komponen XAML friendCanvas
@@ -178,8 +181,8 @@ namespace Tubes2_App
                 edge.Attr.ArrowheadAtTarget = ArrowStyle.None;
                 Node src = graph.FindNode(source);
                 Node target = graph.FindNode(dest);
-                src.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Circle;
-                target.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Circle;
+                src.Attr.Shape = Shape.Circle;
+                target.Attr.Shape = Shape.Circle;
 
                 // Menambah akun unik ke uniqueAccounts
                 uniqueAccounts.Add(source);
@@ -241,18 +244,29 @@ namespace Tubes2_App
             descriptionTextBlock.Inlines.Add(new Bold(new Run("Friend Recommendations for " + currentAccount)));
 
             HashSet<string> uniqueFriendRecommendations = new HashSet<string>();
+            Dictionary<string, List<string>> mutualConnections = new Dictionary<string, List<string>>();
+            int j;
 
             // Pencarian Friend Recommendation berdasarkan mutual friends
             var currentNode = adjacencyList[currentAccount];
-            for (int i = 0; i < currentNode.Count; i++)
+            for (int m = 0; m < currentNode.Count; m++)
             {
-                var currentMutualNode = adjacencyList[currentNode[i]];
-                for (int j = 0; j < currentMutualNode.Count; j++)
+                var currentMutualNode = adjacencyList[currentNode[m]];
+                for (int n = 0; n < currentMutualNode.Count; n++)
                 {
-                    var candidateFriend = currentMutualNode[j];
+                    var candidateFriend = currentMutualNode[n];
+                    if(!mutualConnections.ContainsKey(candidateFriend))
+                    {
+                        List<string> temp = new List<string>();
+                        mutualConnections[candidateFriend] = temp;
+                    }
                     if (candidateFriend != currentAccount && !currentNode.Contains(candidateFriend))
                     {
                         uniqueFriendRecommendations.Add(candidateFriend);
+                        if (!mutualConnections[candidateFriend].Contains(currentNode[m]))
+                        {
+                            mutualConnections[candidateFriend].Add(currentNode[m]);
+                        }
                     }
                 }
             }
@@ -260,7 +274,12 @@ namespace Tubes2_App
             // Mencetak Friend Recommendation ke layar
             foreach (string friendRecommendation in uniqueFriendRecommendations)
             {
-                descriptionTextBlock.Inlines.Add(new Run("\n" + friendRecommendation));
+                descriptionTextBlock.Inlines.Add(new Run("\n\nNama akun : " + friendRecommendation));
+                descriptionTextBlock.Inlines.Add(new Run("\n" + mutualConnections[friendRecommendation].Count + " mutual friends :"));
+                for (int k = 0; k < mutualConnections[friendRecommendation].Count; k++)
+                {
+                    descriptionTextBlock.Inlines.Add(new Run("\n" + mutualConnections[friendRecommendation][k]));
+                }
             }
         }
 
