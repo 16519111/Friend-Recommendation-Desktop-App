@@ -16,7 +16,7 @@ namespace Tubes2_App
     {
         // Attributes
         string[] lines;
-        HashSet<string> uniqueAccounts = new HashSet<string>();
+        SortedSet<string> uniqueAccounts = new SortedSet<string>();
         Bitmap graphBitmap;
         string currentAccount;
         string currentTargetFriend;
@@ -245,7 +245,6 @@ namespace Tubes2_App
 
             HashSet<string> uniqueFriendRecommendations = new HashSet<string>();
             Dictionary<string, List<string>> mutualConnections = new Dictionary<string, List<string>>();
-            int j;
 
             // Pencarian Friend Recommendation berdasarkan mutual friends
             var currentNode = adjacencyList[currentAccount];
