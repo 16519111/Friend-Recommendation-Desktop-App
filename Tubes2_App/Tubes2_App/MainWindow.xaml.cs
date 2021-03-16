@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,7 @@ namespace Tubes2_App
         // Attributes
         string[] lines;
         HashSet<string> uniqueAccounts = new HashSet<string>();
+        Bitmap graphBitmap;
         string currentAccount;
         string currentTargetFriend;
         int lastIndexCurrentAccount;
@@ -37,6 +39,7 @@ namespace Tubes2_App
         Dictionary<string, List<string>> adjacencyList;
         List<string> exploreRoute;
         TextBlock descriptionTextBlock;
+        bool DFSSolution;
 
         // Constructor
         public MainWindow()
@@ -52,8 +55,11 @@ namespace Tubes2_App
         {
             bool isExplorable;
 
-            Friend_Recommendation();
+            // Membersihkan canvas dan textBlock
+            friendCanvas.Children.Clear();
+            descriptionTextBlock.Inlines.Clear();
 
+            Friend_Recommendation();
 
             isExplorable = BFS_Explore();
 
@@ -76,8 +82,8 @@ namespace Tubes2_App
             {
                 descriptionTextBlock.Inlines.Add(new Run("\nFriend Exploration Path Not Found"));
             }
+
             // Merender ulang komponen XAML friendCanvas
-            friendCanvas.Children.Clear();
             friendCanvas.Children.Add(descriptionTextBlock);
         }
 
@@ -103,9 +109,11 @@ namespace Tubes2_App
 
                 // Memunculkan dialog untuk testing
                 // System.Windows.Forms.MessageBox.Show(lines[0], "Error Title", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                System.Windows.Controls.Image myImage3 = new System.Windows.Controls.Image();
+                myImage3.Source = null;
 
                 MakeGraph();
-                System.Windows.Controls.Image myImage3 = new System.Windows.Controls.Image();
+                
                 string path = Environment.CurrentDirectory;
                 BitmapImage bi3 = new BitmapImage();
                 bi3.BeginInit();
@@ -170,15 +178,21 @@ namespace Tubes2_App
                 uniqueAccounts.Add(source);
                 uniqueAccounts.Add(dest);
             }
-            
+
             // Create Graph Image
             Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(graph);
             renderer.CalculateLayout();
             int width = 120;
-            Bitmap bitmap = new Bitmap(width, (int)(graph.Height *
+            graphBitmap = new Bitmap(width, (int)(graph.Height *
             (width / graph.Width)), System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
-            renderer.Render(bitmap);
-            bitmap.Save("graph.png");
+            renderer.Render(graphBitmap);
+
+            Bitmap cloneBitmap = (Bitmap)graphBitmap.Clone();
+
+            string outputFileName = "graph.png";
+
+            cloneBitmap.Save(outputFileName);
+            cloneBitmap.Dispose();
         }
 
         private void handleUpdateComboBox()
@@ -258,15 +272,16 @@ namespace Tubes2_App
             }
 
             expandAccount = currentAccount;
+            visited[expandAccount] = true;
             while (!solutionFound)
             {
-                visited[expandAccount] = true;
                 expandNode = adjacencyList[expandAccount];
                 for (int i=0;i<expandNode.Count;i++)
                 {
                     string currentFocusAccount = expandNode[i];
                     if (!visited[currentFocusAccount])
                     {
+                        visited[currentFocusAccount] = true;
                         Route[currentFocusAccount] = new List<string>();
                         if (Route.ContainsKey(expandAccount))
                         {
@@ -295,9 +310,58 @@ namespace Tubes2_App
             return solutionFound;
         }
 
-        private void DFS_Explore()
+        private bool DFS_Explore()
         {
+            Dictionary<string, bool> visited = new Dictionary<string, bool>();
+            List<string> Route = new List<string>();
+            DFSSolution = false;
+            int num_of_visited;
 
+            foreach (string node in uniqueAccounts)
+            {
+                visited[node] = false;
+            }
+
+            num_of_visited = visited.Count;
+
+            DFS_Recursion(currentAccount, visited, num_of_visited, Route);
+            return DFSSolution;
+        }
+
+        private void DFS_Recursion(string currentFocusAccount, Dictionary<string, bool> visited, int num_of_visited, List<string> Route)
+        {
+            if (currentFocusAccount == currentTargetFriend)
+            {
+                DFSSolution = true;
+                Route.Add(currentTargetFriend);
+                exploreRoute = Route;
+            }
+            else if (num_of_visited < 1 && currentFocusAccount != currentTargetFriend && !DFSSolution)
+            {
+                // Terminasi karena tidak ditemukan path menuju target.
+            }
+            else
+            {
+                Route.Add(currentFocusAccount);
+                visited[currentFocusAccount] = true;
+                num_of_visited--;
+                List<string> tempRoute = Route;
+                List<string> expandNode = adjacencyList[currentFocusAccount];
+                int i = 0;
+
+                while (i<expandNode.Count && !DFSSolution)
+                {
+                    if(!visited[expandNode[i]])
+                    {
+                        DFS_Recursion(expandNode[i], visited, num_of_visited, Route);
+                    }
+                    i++;
+                }
+                if(!DFSSolution)
+                {
+                    Route.Remove(currentFocusAccount);
+                }
+            }
         }
     }
 }

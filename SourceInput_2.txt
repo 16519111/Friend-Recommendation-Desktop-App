@@ -1,4 +1,4 @@
-14
+13
 A B
 A C
 A D
@@ -12,4 +12,3 @@ D F
 E H
 E F
 F H
-I J

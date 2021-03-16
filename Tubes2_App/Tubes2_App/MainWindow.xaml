@@ -24,7 +24,6 @@
         <ComboBox HorizontalAlignment="Left" Height="20" Margin="315,395,0,0" VerticalAlignment="Top" Width="76" Name="Explore_ComboBox" SelectionChanged="Explore_ComboBox_SelectionChanged"/>
         <Canvas HorizontalAlignment="Left" Height="229" Margin="183,137,0,0" VerticalAlignment="Top" Width="437" Name="graphCanvas">
         </Canvas>
-        <Canvas HorizontalAlignment="Left" Height="237" Margin="183,472,0,0" VerticalAlignment="Top" Width="437" Name="friendCanvas">
-        </Canvas>
+        <Canvas HorizontalAlignment="Left" Height="237" Margin="183,472,0,0" VerticalAlignment="Top" Width="437" Name="friendCanvas"/>
     </Grid>
 </Window>
