@@ -40,6 +40,7 @@ namespace Tubes2_App
         List<string> exploreRoute;
         TextBlock descriptionTextBlock;
         bool DFSSolution;
+        string selectedRadio;
 
         // Constructor
         public MainWindow()
@@ -49,6 +50,7 @@ namespace Tubes2_App
             lastIndexCurrentTargetFriend = -1;
             exploreRoute = new List<string>();
             descriptionTextBlock = new TextBlock();
+            selectedRadio = "";
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -61,35 +63,54 @@ namespace Tubes2_App
 
             Friend_Recommendation();
 
-            isExplorable = BFS_Explore();
-
-            if (isExplorable)
+            if(selectedRadio == "")
             {
-                descriptionTextBlock.Inlines.Add(new Run("\nFriend Exploration Path Found"));
-                for (int i=0;i<exploreRoute.Count;i++)
+                System.Windows.Forms.MessageBox.Show("Harap memilih DFS atau BFS terlebih dahulu"
+                    , "Error Title", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            else { 
+                if(selectedRadio == "DFS")
                 {
-                    if (i == 0)
+                    isExplorable = DFS_Explore();
+                }
+                else
+                {
+                    isExplorable = BFS_Explore();
+                }
+
+                if (isExplorable)
+                {
+                    descriptionTextBlock.Inlines.Add(new Run("\nFriend Exploration Path Found"));
+                    for (int i=0;i<exploreRoute.Count;i++)
                     {
-                        descriptionTextBlock.Inlines.Add(new Run("\n" + exploreRoute[i]));
-                    }
-                    else
-                    {
-                        descriptionTextBlock.Inlines.Add(new Run(" -> " + exploreRoute[i]));
+                        if (i == 0)
+                        {
+                            descriptionTextBlock.Inlines.Add(new Run("\n" + exploreRoute[i]));
+                        }
+                        else
+                        {
+                            descriptionTextBlock.Inlines.Add(new Run(" -> " + exploreRoute[i]));
+                        }
                     }
                 }
-            }
-            else
-            {
-                descriptionTextBlock.Inlines.Add(new Run("\nFriend Exploration Path Not Found"));
-            }
+                else
+                {
+                    descriptionTextBlock.Inlines.Add(new Run("\nFriend Exploration Path Not Found"));
+                }
 
-            // Merender ulang komponen XAML friendCanvas
-            friendCanvas.Children.Add(descriptionTextBlock);
+                // Merender ulang komponen XAML friendCanvas
+                friendCanvas.Children.Add(descriptionTextBlock);
+            }
         }
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
+            selectedRadio = "DFS";
+        }
 
+        private void RadioButton_Checked_1(object sender, RoutedEventArgs e)
+        {
+            selectedRadio = "BFS";
         }
 
         private void Browse_File_Button(object sender, RoutedEventArgs e)
@@ -259,6 +280,7 @@ namespace Tubes2_App
 
         private bool BFS_Explore()
         {
+            // Inisiasi variabel
             Queue<string> BFSQueue = new Queue<string>();
             Dictionary<string, bool> visited = new Dictionary<string, bool>();
             bool solutionFound = false;
@@ -271,6 +293,7 @@ namespace Tubes2_App
                 visited[node] = false;
             }
 
+            // BFS secara iteratif
             expandAccount = currentAccount;
             visited[expandAccount] = true;
             while (!solutionFound)
@@ -312,6 +335,8 @@ namespace Tubes2_App
 
         private bool DFS_Explore()
         {
+            // Main untuk pencarian dengan DFS. Menginisiasi variabel dan memanggil
+            // DFS_Recursion (DFS secara rekursif).
             Dictionary<string, bool> visited = new Dictionary<string, bool>();
             List<string> Route = new List<string>();
             DFSSolution = false;
@@ -332,20 +357,21 @@ namespace Tubes2_App
         {
             if (currentFocusAccount == currentTargetFriend)
             {
+                // Basis apabila telah ditemukan friend yang hendak di-explore.
                 DFSSolution = true;
                 Route.Add(currentTargetFriend);
                 exploreRoute = Route;
             }
             else if (num_of_visited < 1 && currentFocusAccount != currentTargetFriend && !DFSSolution)
             {
-                // Terminasi karena tidak ditemukan path menuju target.
+                // Basis terminasi karena tidak ditemukan path menuju target.
             }
             else
             {
+                // Rekurens
                 Route.Add(currentFocusAccount);
                 visited[currentFocusAccount] = true;
                 num_of_visited--;
-                List<string> tempRoute = Route;
                 List<string> expandNode = adjacencyList[currentFocusAccount];
                 int i = 0;
 

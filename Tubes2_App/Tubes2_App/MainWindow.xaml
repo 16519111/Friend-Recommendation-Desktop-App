@@ -19,7 +19,7 @@
         <Button Content="Submit" HorizontalAlignment="Left" Height="33" Margin="185,420,0,0" VerticalAlignment="Top" Width="65" Click="Button_Click"/>
         <Button Content="Browse" HorizontalAlignment="Left" Height="20" Margin="253,77,0,0" VerticalAlignment="Top" Width="50" Click="Browse_File_Button" Name="BrowseButton"/>
         <RadioButton Content="DFS" HorizontalAlignment="Left" Height="20" Margin="253,102,0,0" VerticalAlignment="Top" Width="50" Checked="RadioButton_Checked"/>
-        <RadioButton Content="BFS" HorizontalAlignment="Left" Height="20" Margin="303,103,0,0" VerticalAlignment="Top" Width="43"/>
+        <RadioButton Content="BFS" HorizontalAlignment="Left" Height="20" Margin="303,103,0,0" VerticalAlignment="Top" Width="43" Checked="RadioButton_Checked_1"/>
         <ComboBox HorizontalAlignment="Left" Height="20" Margin="315,370,0,0" VerticalAlignment="Top" Width="76" Name="Choose_Account_ComboBox" SelectionChanged="Choose_Account_ComboBox_SelectionChanged"/>
         <ComboBox HorizontalAlignment="Left" Height="20" Margin="315,395,0,0" VerticalAlignment="Top" Width="76" Name="Explore_ComboBox" SelectionChanged="Explore_ComboBox_SelectionChanged"/>
         <Canvas HorizontalAlignment="Left" Height="229" Margin="183,137,0,0" VerticalAlignment="Top" Width="437" Name="graphCanvas">
