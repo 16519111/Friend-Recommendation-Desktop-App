@@ -5,25 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tubes2_App"
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="800">
-    <Grid Margin="0,0,-0.4,-285" Name="mainGrid" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}">
+        Title="MainWindow" Height="700" Width="500">
+    <Grid Margin="0,0,-0.4,-414.2" Name="mainGrid" Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="People You May Know" VerticalAlignment="Top" Height="35" Width="252" TextAlignment="Center" FontSize="22" FontWeight="Bold"/>
-        <TextBlock HorizontalAlignment="Left" Height="20" Margin="183,77,0,0" TextWrapping="Wrap" Text="Graph File :" VerticalAlignment="Top" Width="65" RenderTransformOrigin="1.557,0.5"/>
-        <TextBlock HorizontalAlignment="Left" Height="20" Margin="183,102,0,0" TextWrapping="Wrap" Text="Algorithm :" VerticalAlignment="Top" Width="65"/>
-        <TextBlock HorizontalAlignment="Left" Height="20" Margin="185,370,0,0" TextWrapping="Wrap" Text="Choose Account :" VerticalAlignment="Top" Width="99"/>
-        <TextBlock HorizontalAlignment="Left" Height="20" Margin="185,395,0,0" TextWrapping="Wrap" Text="Explore Friends With :" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Submit" HorizontalAlignment="Left" Height="33" Margin="185,420,0,0" VerticalAlignment="Top" Width="65" Click="Button_Click"/>
-        <Button Content="Browse" HorizontalAlignment="Left" Height="20" Margin="253,77,0,0" VerticalAlignment="Top" Width="50" Click="Browse_File_Button" Name="BrowseButton"/>
-        <RadioButton Content="DFS" HorizontalAlignment="Left" Height="20" Margin="253,102,0,0" VerticalAlignment="Top" Width="50" Checked="RadioButton_Checked"/>
-        <RadioButton Content="BFS" HorizontalAlignment="Left" Height="20" Margin="303,103,0,0" VerticalAlignment="Top" Width="43" Checked="RadioButton_Checked_1"/>
-        <ComboBox HorizontalAlignment="Left" Height="20" Margin="315,370,0,0" VerticalAlignment="Top" Width="76" Name="Choose_Account_ComboBox" SelectionChanged="Choose_Account_ComboBox_SelectionChanged"/>
-        <ComboBox HorizontalAlignment="Left" Height="20" Margin="315,395,0,0" VerticalAlignment="Top" Width="76" Name="Explore_ComboBox" SelectionChanged="Explore_ComboBox_SelectionChanged"/>
-        <Canvas HorizontalAlignment="Left" Height="229" Margin="183,137,0,0" VerticalAlignment="Top" Width="437" Name="graphCanvas">
-        </Canvas>
-        <Canvas HorizontalAlignment="Left" Height="237" Margin="183,472,0,0" VerticalAlignment="Top" Width="437" Name="friendCanvas"/>
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="MANGGA" VerticalAlignment="Top" Height="35" Width="269" TextAlignment="Center" FontSize="22" FontWeight="Bold" Foreground="Black" Margin="136,21,139,0" FontFamily="Segoe UI Historic"/>
+        <TextBlock HorizontalAlignment="Left" Height="20" Margin="55,106,0,0" TextWrapping="Wrap" Text="Your Current Friendship Graph" VerticalAlignment="Top" Width="172" RenderTransformOrigin="1.557,0.5" Foreground="#FF4B4545" FontFamily="Segoe UI Semilight"/>
+        <TextBlock HorizontalAlignment="Left" Height="20" Margin="55,382,0,0" TextWrapping="Wrap" Text="How would you find your true friends?" VerticalAlignment="Top" Width="229" Foreground="#FF717070"/>
+        <TextBlock HorizontalAlignment="Left" Height="20" Margin="55,432,0,0" TextWrapping="Wrap" Text="Which person to stalk?" VerticalAlignment="Top" Width="131" Foreground="#FF545454"/>
+        <TextBlock HorizontalAlignment="Left" Height="20" Margin="55,457,0,0" TextWrapping="Wrap" Text="Explore Friends With :" VerticalAlignment="Top" Width="120" Foreground="#FF515151"/>
+        <Button Content="Submit" HorizontalAlignment="Left" Height="33" Margin="55,482,0,0" VerticalAlignment="Top" Width="61" Click="Button_Click"/>
+        <Button Content="Browse" HorizontalAlignment="Left" Height="20" Margin="55,131,0,0" VerticalAlignment="Top" Width="50" Click="Browse_File_Button" Name="BrowseButton"/>
+        <RadioButton Content="DFS" HorizontalAlignment="Left" Height="20" Margin="55,407,0,0" VerticalAlignment="Top" Width="50" Checked="RadioButton_Checked" RenderTransformOrigin="0.108,0.5"/>
+        <RadioButton Content="BFS" HorizontalAlignment="Left" Height="20" Margin="105,407,0,0" VerticalAlignment="Top" Width="43" Checked="RadioButton_Checked_1"/>
+        <ComboBox HorizontalAlignment="Left" Height="20" Margin="191,432,0,0" VerticalAlignment="Top" Width="76" Name="Choose_Account_ComboBox" SelectionChanged="Choose_Account_ComboBox_SelectionChanged" RenderTransformOrigin="0.808,0.57"/>
+        <ComboBox HorizontalAlignment="Left" Height="20" Margin="191,457,0,0" VerticalAlignment="Top" Width="76" Name="Explore_ComboBox" SelectionChanged="Explore_ComboBox_SelectionChanged"/>
+        <Canvas HorizontalAlignment="Center" Height="214" Margin="138,168,40.6,0" VerticalAlignment="Top" Width="315" Name="graphCanvas"/>
+        <Canvas HorizontalAlignment="Left" Height="237" Margin="55,532,0,0" VerticalAlignment="Top" Width="398" Name="friendCanvas"/>
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Introvert Transformer On the Go!" VerticalAlignment="Top" Height="35" Width="269" TextAlignment="Center" FontSize="14" Foreground="Black" Margin="136,56,139,0" FontFamily="Segoe UI Light"/>
+        <Border BorderBrush="White" BorderThickness="1" HorizontalAlignment="Left" Height="66" Margin="38,97,0,0" VerticalAlignment="Top" Width="415" CornerRadius="8" Background="#FFF9F9F9" Panel.ZIndex="-1"/>
     </Grid>
 </Window>
