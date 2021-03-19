@@ -18,3 +18,6 @@ D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\bin\Debug\Automati
 D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\bin\Debug\Microsoft.Msagl.GraphViewerGdi.dll
 D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\bin\Debug\Microsoft.Msagl.WpfGraphControl.dll
 D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\Tubes2_App.csproj.CopyComplete
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\App.baml
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\obj\Debug\Tubes2_App_Content.g.cs
+D:\DIMAS ITB\Stima\Tubes2\Stima2-IF2211\Tubes2_App\Tubes2_App\bin\Debug\Fonts\Viga-Regular.ttf

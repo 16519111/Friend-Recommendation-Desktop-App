@@ -186,6 +186,11 @@ namespace Tubes2_App
                 Node target = graph.FindNode(dest);
                 src.Attr.Shape = Shape.Circle;
                 target.Attr.Shape = Shape.Circle;
+                src.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PeachPuff;
+                target.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PeachPuff;
+                src.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
+                target.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
+                edge.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
 
                 // Menambah akun unik ke uniqueAccounts
                 uniqueAccounts.Add(source);

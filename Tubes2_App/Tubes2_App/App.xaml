@@ -4,6 +4,10 @@
              xmlns:local="clr-namespace:Tubes2_App"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style x:Key="VigaFont">
+            <Setter Property="TextBlock.FontFamily" Value="/Fonts/#Viga">
+
+            </Setter>
+        </Style>
     </Application.Resources>
 </Application>
