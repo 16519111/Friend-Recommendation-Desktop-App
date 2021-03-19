@@ -51,8 +51,6 @@ namespace Tubes2_App
             exploreTextBlock.Inlines.Clear();
             exploreTextBlock.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
 
-            Friend_Recommendation();
-
             if(selectedRadio == "")
             {
                 System.Windows.Forms.MessageBox.Show("Harap memilih DFS atau BFS terlebih dahulu"
@@ -197,6 +195,7 @@ namespace Tubes2_App
             // Create Graph Image
             Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(graph);
             renderer.CalculateLayout();
+            graph.Attr.BackgroundColor = Microsoft.Msagl.Drawing.Color.Transparent;
             int width = 120;
             graphBitmap = new Bitmap(width, (int)(graph.Height *
             (width / graph.Width)), System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
