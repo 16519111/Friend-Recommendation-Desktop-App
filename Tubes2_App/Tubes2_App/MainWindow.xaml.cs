@@ -25,6 +25,7 @@ namespace Tubes2_App
         Dictionary<string, List<string>> adjacencyList;
         List<string> exploreRoute;
         TextBlock descriptionTextBlock;
+        TextBlock exploreTextBlock;
         bool DFSSolution;
         string selectedRadio;
 
@@ -36,6 +37,8 @@ namespace Tubes2_App
             lastIndexCurrentTargetFriend = -1;
             exploreRoute = new List<string>();
             descriptionTextBlock = new TextBlock();
+            exploreTextBlock = new TextBlock();
+            descriptionTextBlock.TextAlignment = TextAlignment.Center;
             selectedRadio = "";
         }
 
@@ -44,8 +47,9 @@ namespace Tubes2_App
             bool isExplorable;
 
             // Membersihkan canvas dan textBlock
-            friendCanvas.Children.Clear();
-            descriptionTextBlock.Inlines.Clear();
+            exploreCanvas.Children.Clear();
+            exploreTextBlock.Inlines.Clear();
+            exploreTextBlock.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
 
             Friend_Recommendation();
 
@@ -66,29 +70,29 @@ namespace Tubes2_App
 
                 if (isExplorable)
                 {
-                    descriptionTextBlock.Inlines.Add(new Bold(new Run("\n\nNama akun : " + currentAccount + " dan " + currentTargetFriend)));
-                    descriptionTextBlock.Inlines.Add(new Run("\n" + (exploreRoute.Count-2).ToString() + " degree connection"));
+                    exploreTextBlock.Inlines.Add(new Bold(new Run("\n\nNama akun : " + currentAccount + " dan " + currentTargetFriend)));
+                    exploreTextBlock.Inlines.Add(new Run("\n" + (exploreRoute.Count-2).ToString() + " degree connection"));
                     for (int i=0;i<exploreRoute.Count;i++)
                     {
                         if (i == 0)
                         {
-                            descriptionTextBlock.Inlines.Add(new Run("\n" + exploreRoute[i]));
+                            exploreTextBlock.Inlines.Add(new Run("\n" + exploreRoute[i]));
                         }
                         else
                         {
-                            descriptionTextBlock.Inlines.Add(new Run(" -> " + exploreRoute[i]));
+                            exploreTextBlock.Inlines.Add(new Run(" -> " + exploreRoute[i]));
                         }
                     }
                 }
                 else
                 {
-                    descriptionTextBlock.Inlines.Add(new Bold(new Run("\n\nNama akun : " + currentAccount + " dan " + currentTargetFriend)));
-                    descriptionTextBlock.Inlines.Add(new Run("\nTidak ada jalur koneksi yang tersedia"));
-                    descriptionTextBlock.Inlines.Add(new Run("\nAnda harus memulai koneksi baru itu sendiri"));
+                    exploreTextBlock.Inlines.Add(new Bold(new Run("\n\nNama akun : " + currentAccount + " dan " + currentTargetFriend)));
+                    exploreTextBlock.Inlines.Add(new Run("\nTidak ada jalur koneksi yang tersedia"));
+                    exploreTextBlock.Inlines.Add(new Run("\nAnda harus memulai koneksi baru itu sendiri"));
                 }
 
-                // Merender ulang komponen XAML friendCanvas
-                friendCanvas.Children.Add(descriptionTextBlock);
+                // Merender ulang komponen XAML exploreCanvas
+                exploreCanvas.Children.Add(exploreTextBlock);
             }
         }
 
@@ -133,6 +137,7 @@ namespace Tubes2_App
                 myImage3.Source = bi3;
                 myImage3.Width = 200;
                 myImage3.Height = 200;
+                myImage3.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
                 graphCanvas.Children.Add(myImage3);
 
                 generateAdjacencyList();
@@ -224,6 +229,15 @@ namespace Tubes2_App
             currentAccount = Choose_Account_ComboBox.SelectedItem.ToString();
             lastIndexCurrentTargetFriend = Explore_ComboBox.Items.IndexOf(currentAccount);
             Explore_ComboBox.Items.Remove(currentAccount);
+
+            friendCanvas.Children.Clear();
+            exploreCanvas.Children.Clear();
+            descriptionTextBlock.Inlines.Clear();
+            descriptionTextBlock.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            exploreTextBlock.Inlines.Clear();
+            exploreTextBlock.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            Friend_Recommendation();
+            friendCanvas.Children.Add(descriptionTextBlock);
         }
 
         private void Explore_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -244,7 +258,9 @@ namespace Tubes2_App
             descriptionTextBlock.Inlines.Add(new Bold(new Run("Friend Recommendations for " + currentAccount)));
 
             HashSet<string> uniqueFriendRecommendations = new HashSet<string>();
+            HashSet<string> sortedFriendRecommendations = new HashSet<string>();
             Dictionary<string, List<string>> mutualConnections = new Dictionary<string, List<string>>();
+            List<int> numOfMutuals = new List<int>();
 
             // Pencarian Friend Recommendation berdasarkan mutual friends
             var currentNode = adjacencyList[currentAccount];
@@ -270,8 +286,26 @@ namespace Tubes2_App
                 }
             }
 
-            // Mencetak Friend Recommendation ke layar
+            // Sort untuk ditampilkan dari mutual friends terbanyak lebih dahulu
             foreach (string friendRecommendation in uniqueFriendRecommendations)
+            {
+                numOfMutuals.Add(mutualConnections[friendRecommendation].Count);
+            }
+            numOfMutuals.Sort();
+            
+            for(int i=numOfMutuals.Count-1; i>=0; i--)
+            {
+                foreach (string friendRecommendation in uniqueFriendRecommendations)
+                {
+                    if(mutualConnections[friendRecommendation].Count == numOfMutuals[i])
+                    {
+                        sortedFriendRecommendations.Add(friendRecommendation);
+                    }
+                }
+            }
+
+            // Mencetak Friend Recommendation ke layar
+            foreach (string friendRecommendation in sortedFriendRecommendations)
             {
                 descriptionTextBlock.Inlines.Add(new Run("\n\nNama akun : " + friendRecommendation));
                 descriptionTextBlock.Inlines.Add(new Run("\n" + mutualConnections[friendRecommendation].Count + " mutual friends :"));
