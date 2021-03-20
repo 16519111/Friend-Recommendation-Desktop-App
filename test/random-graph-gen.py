@@ -38,7 +38,7 @@ while (edgecreated < options.edgecount):
             edgecreated += 1
 
 print("Node selected : ", nodeselected)
-ftarget.write(str(options.nodecount) + "\n")
+ftarget.write(str(options.edgecount) + "\n")
 for connection in graph:
     print(connection[0], connection[1])
     ftarget.write(connection[0] + " " + connection[1] + "\n")
