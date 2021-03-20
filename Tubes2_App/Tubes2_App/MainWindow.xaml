@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tubes2_App"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="1600">
+        Title="MainWindow" Height="700" Width="1300">
     <Grid Margin="0,0,-0.4,0" Name="mainGrid" Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
