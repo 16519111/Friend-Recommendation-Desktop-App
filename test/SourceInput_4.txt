@@ -1,0 +1,20 @@
+19
+A B
+A C
+A D
+A E
+B F
+B G
+B H
+D I
+D J
+G K
+G L
+L M
+M N
+N O
+N P
+O Q
+O R
+P S
+S T
