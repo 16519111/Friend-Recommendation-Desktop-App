@@ -56,7 +56,7 @@ namespace Tubes2_App
                 System.Windows.Forms.MessageBox.Show("Harap memilih DFS atau BFS terlebih dahulu"
                     , "Error Title", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-            else { 
+            else {
                 if(selectedRadio == "DFS")
                 {
                     isExplorable = DFS_Explore();
@@ -107,7 +107,7 @@ namespace Tubes2_App
         private void Browse_File_Button(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.OpenFileDialog fileDialog = new System.Windows.Forms.OpenFileDialog();
-            fileDialog.DefaultExt = ".txt"; // Required file extension 
+            fileDialog.DefaultExt = ".txt"; // Required file extension
             fileDialog.Filter = "Text documents (.txt)|*.txt"; // Optional file extensions
             fileDialog.Multiselect = false;
 
@@ -115,21 +115,22 @@ namespace Tubes2_App
             {
                 // Get directory file .txt yang dipilih
                 string sFileName = fileDialog.FileName;
+                string filename = sFileName.Substring(sFileName.LastIndexOf('\\') + 1).Replace(".txt", "");
 
                 // Baca line per line kemudian dimasukkan ke array of string lines
                 lines = System.IO.File.ReadAllLines(@sFileName);
 
                 // Memunculkan dialog untuk testing
-                // System.Windows.Forms.MessageBox.Show(lines[0], "Error Title", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                // System.Windows.Forms.MessageBox.Show(filename, "Error Title", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 System.Windows.Controls.Image myImage3 = new System.Windows.Controls.Image();
                 myImage3.Source = null;
 
-                MakeGraph();
-                
+                MakeGraph(filename);
+
                 string path = Environment.CurrentDirectory;
                 BitmapImage bi3 = new BitmapImage();
                 bi3.BeginInit();
-                bi3.UriSource = new Uri(@path + "/graph.png", UriKind.Absolute);
+                bi3.UriSource = new Uri(@path + ("/graph-" + filename + ".png"), UriKind.Absolute);
                 bi3.EndInit();
                 myImage3.Stretch = Stretch.None;
                 myImage3.Source = bi3;
@@ -167,9 +168,9 @@ namespace Tubes2_App
             }
         }
 
-        private void MakeGraph()
+        private void MakeGraph(string filename)
         {
-            // Create Graph Object 
+            // Create Graph Object
             Graph graph = new Graph("graph");
 
             // Create Graph Content
@@ -208,7 +209,8 @@ namespace Tubes2_App
 
             Bitmap cloneBitmap = (Bitmap)graphBitmap.Clone();
 
-            string outputFileName = "graph.png";
+            string outputFileName = "graph-" + filename + ".png";
+            // string outputFileName = "graph.png";
 
             cloneBitmap.Save(outputFileName);
             cloneBitmap.Dispose();
@@ -228,7 +230,7 @@ namespace Tubes2_App
             // Logic untuk handleSelectionChange (event) Choose_Account
             if(lastIndexCurrentTargetFriend >= 0)
             {
-                Explore_ComboBox.Items.Insert(lastIndexCurrentTargetFriend, currentAccount);  
+                Explore_ComboBox.Items.Insert(lastIndexCurrentTargetFriend, currentAccount);
             }
             currentAccount = Choose_Account_ComboBox.SelectedItem.ToString();
             lastIndexCurrentTargetFriend = Explore_ComboBox.Items.IndexOf(currentAccount);
@@ -296,7 +298,7 @@ namespace Tubes2_App
                 numOfMutuals.Add(mutualConnections[friendRecommendation].Count);
             }
             numOfMutuals.Sort();
-            
+
             for(int i=numOfMutuals.Count-1; i>=0; i--)
             {
                 foreach (string friendRecommendation in uniqueFriendRecommendations)
