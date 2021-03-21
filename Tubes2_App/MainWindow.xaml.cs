@@ -25,6 +25,7 @@ namespace Tubes2_App
         Dictionary<string, List<string>> adjacencyList;
         List<string> exploreRoute;
         TextBlock descriptionTextBlock;
+        TextBlock friendsTextBlock;
         TextBlock exploreTextBlock;
         bool DFSSolution;
         string selectedRadio;
@@ -33,13 +34,11 @@ namespace Tubes2_App
         public MainWindow()
         {
             InitializeComponent();
-            lastIndexCurrentAccount = -1;
-            lastIndexCurrentTargetFriend = -1;
             exploreRoute = new List<string>();
             descriptionTextBlock = new TextBlock();
+            friendsTextBlock = new TextBlock();
             exploreTextBlock = new TextBlock();
             descriptionTextBlock.TextAlignment = TextAlignment.Center;
-            selectedRadio = "";
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -51,7 +50,7 @@ namespace Tubes2_App
             exploreTextBlock.Inlines.Clear();
             exploreTextBlock.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
 
-            if(selectedRadio == "")
+            if (selectedRadio == "")
             {
                 System.Windows.Forms.MessageBox.Show("Harap memilih DFS atau BFS terlebih dahulu"
                     , "Error Title", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -113,6 +112,19 @@ namespace Tubes2_App
 
             if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                // Clearing and Refreshing variables
+                graphCanvas.Children.Clear();
+                uniqueAccounts.Clear();
+                selectedRadio = "";
+                currentAccount = null;
+                currentTargetFriend = null;
+                lastIndexCurrentAccount = -1;
+                lastIndexCurrentTargetFriend = -1;
+                selectedRadio = "";
+                BFS_Radio.IsChecked = false;
+                DFS_Radio.IsChecked = false;
+
+
                 // Get directory file .txt yang dipilih
                 string sFileName = fileDialog.FileName;
                 string filename = sFileName.Substring(sFileName.LastIndexOf('\\') + 1).Replace(".txt", "");
@@ -135,8 +147,9 @@ namespace Tubes2_App
                 myImage3.Stretch = Stretch.None;
                 myImage3.Source = bi3;
                 myImage3.Width = 200;
-                myImage3.Height = 200;
+                myImage3.Height = 500;
                 myImage3.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+                myImage3.VerticalAlignment = System.Windows.VerticalAlignment.Top;
                 graphCanvas.Children.Add(myImage3);
 
                 generateAdjacencyList();
@@ -172,6 +185,8 @@ namespace Tubes2_App
         {
             // Create Graph Object
             Graph graph = new Graph("graph");
+            var bc = new BrushConverter();
+            text.Foreground = (System.Windows.Media.Brush)bc.ConvertFrom("#FF522E92");
 
             // Create Graph Content
             for (int i = 1; i < lines.Length; i++)
@@ -202,7 +217,7 @@ namespace Tubes2_App
             Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(graph);
             renderer.CalculateLayout();
             graph.Attr.BackgroundColor = Microsoft.Msagl.Drawing.Color.Transparent;
-            int width = 120;
+            int width = 200;
             graphBitmap = new Bitmap(width, (int)(graph.Height *
             (width / graph.Width)), System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
             renderer.Render(graphBitmap);
@@ -218,6 +233,10 @@ namespace Tubes2_App
 
         private void handleUpdateComboBox()
         {
+            // Refreshing Comboboxes
+            Choose_Account_ComboBox.Items.Clear();
+            Explore_ComboBox.Items.Clear();
+
             foreach (string account in uniqueAccounts)
             {
                 Choose_Account_ComboBox.Items.Add(account);
@@ -238,12 +257,14 @@ namespace Tubes2_App
 
             friendCanvas.Children.Clear();
             exploreCanvas.Children.Clear();
+            //var bc = new BrushConverter();
+            //friendCanvas.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#FFB99AFF");
+            //friendCanvas.Background.Opacity = 0.5;
             descriptionTextBlock.Inlines.Clear();
             descriptionTextBlock.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             exploreTextBlock.Inlines.Clear();
             exploreTextBlock.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             Friend_Recommendation();
-            friendCanvas.Children.Add(descriptionTextBlock);
         }
 
         private void Explore_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -261,7 +282,11 @@ namespace Tubes2_App
         private void Friend_Recommendation()
         {
             // Mencetak judul
-            descriptionTextBlock.Inlines.Add(new Bold(new Run("Friend Recommendations for " + currentAccount)));
+            Run text = new Run("Friend Recommendations for " + currentAccount);
+            var bc = new BrushConverter();
+            text.Foreground = (System.Windows.Media.Brush)bc.ConvertFrom("#FF522E92");
+            text.Style = System.Windows.Application.Current.TryFindResource("VigaFont") as System.Windows.Style;
+            descriptionTextBlock.Inlines.Add(text);
 
             HashSet<string> uniqueFriendRecommendations = new HashSet<string>();
             HashSet<string> sortedFriendRecommendations = new HashSet<string>();
@@ -310,16 +335,27 @@ namespace Tubes2_App
                 }
             }
 
+            friendCanvas.Children.Add(descriptionTextBlock);
+
             // Mencetak Friend Recommendation ke layar
             foreach (string friendRecommendation in sortedFriendRecommendations)
             {
-                descriptionTextBlock.Inlines.Add(new Run("\n\nNama akun : " + friendRecommendation));
-                descriptionTextBlock.Inlines.Add(new Run("\n" + mutualConnections[friendRecommendation].Count + " mutual friends :"));
+                
+                Border friendsBorder = new Border();
+                friendsBorder.CornerRadius = new CornerRadius(20);
+                friendsBorder.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#FF522E92");
+                friendsBorder.Background.Opacity = 0.2;
+                //friendsTextBlock = new TextBlock();
+                friendsTextBlock.Inlines.Add(new Run("\n\nNama akun : " + friendRecommendation));
+                friendsTextBlock.Inlines.Add(new Run("\n" + mutualConnections[friendRecommendation].Count + " mutual friends :"));
                 for (int k = 0; k < mutualConnections[friendRecommendation].Count; k++)
                 {
-                    descriptionTextBlock.Inlines.Add(new Run("\n" + mutualConnections[friendRecommendation][k]));
+                    friendsTextBlock.Inlines.Add(new Run("\n" + mutualConnections[friendRecommendation][k]));
                 }
+                //friendsBorder.Child = friendsTextBlock;
+                
             }
+            friendCanvas.Children.Add(friendsTextBlock);
         }
 
         private bool BFS_Explore()
