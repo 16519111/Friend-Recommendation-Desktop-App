@@ -113,6 +113,8 @@ namespace Tubes2_App
             if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 // Clearing and Refreshing variables
+                friendCanvas.Children.Clear();
+                exploreCanvas.Children.Clear();
                 graphCanvas.Children.Clear();
                 uniqueAccounts.Clear();
                 selectedRadio = "";
@@ -185,8 +187,7 @@ namespace Tubes2_App
         {
             // Create Graph Object
             Graph graph = new Graph("graph");
-            var bc = new BrushConverter();
-            text.Foreground = (System.Windows.Media.Brush)bc.ConvertFrom("#FF522E92");
+
 
             // Create Graph Content
             for (int i = 1; i < lines.Length; i++)
@@ -246,37 +247,42 @@ namespace Tubes2_App
 
         private void Choose_Account_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(Choose_Account_ComboBox.SelectedItem != null) { 
             // Logic untuk handleSelectionChange (event) Choose_Account
-            if(lastIndexCurrentTargetFriend >= 0)
-            {
-                Explore_ComboBox.Items.Insert(lastIndexCurrentTargetFriend, currentAccount);
-            }
-            currentAccount = Choose_Account_ComboBox.SelectedItem.ToString();
-            lastIndexCurrentTargetFriend = Explore_ComboBox.Items.IndexOf(currentAccount);
-            Explore_ComboBox.Items.Remove(currentAccount);
+                if(lastIndexCurrentTargetFriend >= 0)
+                {
+                    Explore_ComboBox.Items.Insert(lastIndexCurrentTargetFriend, currentAccount);
+                }
+                currentAccount = Choose_Account_ComboBox.SelectedItem.ToString();
+                lastIndexCurrentTargetFriend = Explore_ComboBox.Items.IndexOf(currentAccount);
+                Explore_ComboBox.Items.Remove(currentAccount);
 
-            friendCanvas.Children.Clear();
-            exploreCanvas.Children.Clear();
-            //var bc = new BrushConverter();
-            //friendCanvas.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#FFB99AFF");
-            //friendCanvas.Background.Opacity = 0.5;
-            descriptionTextBlock.Inlines.Clear();
-            descriptionTextBlock.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-            exploreTextBlock.Inlines.Clear();
-            exploreTextBlock.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-            Friend_Recommendation();
+                friendCanvas.Children.Clear();
+                exploreCanvas.Children.Clear();
+                //var bc = new BrushConverter();
+                //friendCanvas.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#FFB99AFF");
+                //friendCanvas.Background.Opacity = 0.5;
+                friendsTextBlock.Inlines.Clear();
+                descriptionTextBlock.Inlines.Clear();
+                descriptionTextBlock.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+                exploreTextBlock.Inlines.Clear();
+                exploreTextBlock.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+                Friend_Recommendation();
+            }
         }
 
         private void Explore_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Logic untuk handleSelectionChange (event) Explore
-            if (lastIndexCurrentAccount >= 0)
-            {
-                Choose_Account_ComboBox.Items.Insert(lastIndexCurrentAccount, currentTargetFriend);
+            if(Explore_ComboBox.SelectedItem != null) { 
+                // Logic untuk handleSelectionChange (event) Explore
+                if (lastIndexCurrentAccount >= 0)
+                {
+                    Choose_Account_ComboBox.Items.Insert(lastIndexCurrentAccount, currentTargetFriend);
+                }
+                currentTargetFriend = Explore_ComboBox.SelectedItem.ToString();
+                lastIndexCurrentAccount = Choose_Account_ComboBox.Items.IndexOf(currentTargetFriend);
+                Choose_Account_ComboBox.Items.Remove(currentTargetFriend);
             }
-            currentTargetFriend = Explore_ComboBox.SelectedItem.ToString();
-            lastIndexCurrentAccount = Choose_Account_ComboBox.Items.IndexOf(currentTargetFriend);
-            Choose_Account_ComboBox.Items.Remove(currentTargetFriend);
         }
 
         private void Friend_Recommendation()
@@ -301,7 +307,7 @@ namespace Tubes2_App
                 for (int n = 0; n < currentMutualNode.Count; n++)
                 {
                     var candidateFriend = currentMutualNode[n];
-                    if(!mutualConnections.ContainsKey(candidateFriend))
+                    if (!mutualConnections.ContainsKey(candidateFriend))
                     {
                         List<string> temp = new List<string>();
                         mutualConnections[candidateFriend] = temp;
@@ -336,26 +342,36 @@ namespace Tubes2_App
             }
 
             friendCanvas.Children.Add(descriptionTextBlock);
-
             // Mencetak Friend Recommendation ke layar
+            int currentSpaceIncrement = 0;
             foreach (string friendRecommendation in sortedFriendRecommendations)
             {
-                
+                friendsTextBlock = new TextBlock();
                 Border friendsBorder = new Border();
                 friendsBorder.CornerRadius = new CornerRadius(20);
                 friendsBorder.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#FF522E92");
                 friendsBorder.Background.Opacity = 0.2;
                 //friendsTextBlock = new TextBlock();
+                //for(int a=0;a<b;a++)
+                //{
+                //    friendsTextBlock.Inlines.Add(new Run("\n\n"));
+                //}
+                for (int k = 0; k < currentSpaceIncrement; k++)
+                {
+                    friendsTextBlock.Inlines.Add(new Run("\n"));
+                }
                 friendsTextBlock.Inlines.Add(new Run("\n\nNama akun : " + friendRecommendation));
                 friendsTextBlock.Inlines.Add(new Run("\n" + mutualConnections[friendRecommendation].Count + " mutual friends :"));
                 for (int k = 0; k < mutualConnections[friendRecommendation].Count; k++)
                 {
                     friendsTextBlock.Inlines.Add(new Run("\n" + mutualConnections[friendRecommendation][k]));
                 }
+                currentSpaceIncrement = currentSpaceIncrement + mutualConnections[friendRecommendation].Count + 3;
                 //friendsBorder.Child = friendsTextBlock;
-                
+                friendCanvas.Children.Add(friendsTextBlock);
             }
-            friendCanvas.Children.Add(friendsTextBlock);
+            
+            
         }
 
         private bool BFS_Explore()
