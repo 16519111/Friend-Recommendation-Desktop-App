@@ -81,8 +81,15 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid HorizontalAlignment="Center" Grid.Column="0" Height="450" Margin="0,20,0,0" VerticalAlignment="Top" Width="342" Name="friendCanvas"/>
-                    <Grid HorizontalAlignment="Center" Grid.Column="1" Height="450" Margin="0,0,0,0" VerticalAlignment="Top" Width="342" Name="exploreCanvas"/>
+                    <Grid HorizontalAlignment="Center" Grid.Column="0" Height="450" Margin="0,0,0,0" VerticalAlignment="Top" Width="312" Name="friendCanvas"/>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="150"/>
+                            <RowDefinition Height="300"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top" Width="312" Name="exploreCanvas"/>
+                        <Grid Grid.Row="1" HorizontalAlignment="Center" Height="300" Margin="0,0,0,0" VerticalAlignment="Top" Width="312" Name="exploreGraph"/>
+                    </Grid>
                 </Grid>
             </Grid>
         </Grid>

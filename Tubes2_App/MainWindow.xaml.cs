@@ -47,8 +47,11 @@ namespace Tubes2_App
 
             // Membersihkan canvas dan textBlock
             exploreCanvas.Children.Clear();
+            exploreGraph.Children.Clear();
             exploreTextBlock.Inlines.Clear();
             exploreTextBlock.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            exploreTextBlock.VerticalAlignment = VerticalAlignment.Top;
+            exploreTextBlock.TextAlignment = TextAlignment.Center;
 
             if (selectedRadio == "")
             {
@@ -65,27 +68,68 @@ namespace Tubes2_App
                     isExplorable = BFS_Explore();
                 }
 
+                Run text;
+                var bc = new BrushConverter();
+
+                text = new Run("\nExplore Friends With " + currentTargetFriend);
+                text.Foreground = (System.Windows.Media.Brush)bc.ConvertFrom("#FF522E92");
+                text.Style = System.Windows.Application.Current.TryFindResource("VigaFont") as System.Windows.Style;
+                exploreTextBlock.Inlines.Add(text);
                 if (isExplorable)
                 {
-                    exploreTextBlock.Inlines.Add(new Bold(new Run("\n\nNama akun : " + currentAccount + " dan " + currentTargetFriend)));
-                    exploreTextBlock.Inlines.Add(new Run("\n" + (exploreRoute.Count-2).ToString() + " degree connection"));
+                    
+                    text = new Run("\n\nNama akun : " + currentAccount + " dan " + currentTargetFriend);
+                    text.Style = System.Windows.Application.Current.TryFindResource("VigaFont") as System.Windows.Style;
+                    exploreTextBlock.Inlines.Add(text);
+                    text = new Run("\n\n" + (exploreRoute.Count - 2).ToString() + " degree connection");
+                    text.Style = System.Windows.Application.Current.TryFindResource("VigaFont") as System.Windows.Style;
+                    exploreTextBlock.Inlines.Add(text);
                     for (int i=0;i<exploreRoute.Count;i++)
                     {
                         if (i == 0)
                         {
-                            exploreTextBlock.Inlines.Add(new Run("\n" + exploreRoute[i]));
+                            text = new Run("\n" + exploreRoute[i]);
+                            text.Style = System.Windows.Application.Current.TryFindResource("VigaFont") as System.Windows.Style;
+                            exploreTextBlock.Inlines.Add(text);
                         }
                         else
                         {
-                            exploreTextBlock.Inlines.Add(new Run(" -> " + exploreRoute[i]));
+                            text = new Run(" -> " + exploreRoute[i]);
+                            text.Style = System.Windows.Application.Current.TryFindResource("VigaFont") as System.Windows.Style;
+                            exploreTextBlock.Inlines.Add(text);
                         }
                     }
+
+                    // Draw Explore Graph
+                    MakeGraph("", true);
+
+                    System.Windows.Controls.Image myImage3 = new System.Windows.Controls.Image();
+                    myImage3.Source = null;
+
+                    string path = Environment.CurrentDirectory;
+                    BitmapImage bi3 = new BitmapImage();
+                    bi3.BeginInit();
+                    bi3.UriSource = new Uri(@path + ("/exploreGraph.png"), UriKind.Absolute);
+                    bi3.EndInit();
+                    myImage3.Stretch = Stretch.None;
+                    myImage3.Source = bi3;
+                    myImage3.Width = 200;
+                    myImage3.Height = 500;
+                    myImage3.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+                    myImage3.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                    exploreGraph.Children.Add(myImage3);
                 }
                 else
                 {
-                    exploreTextBlock.Inlines.Add(new Bold(new Run("\n\nNama akun : " + currentAccount + " dan " + currentTargetFriend)));
-                    exploreTextBlock.Inlines.Add(new Run("\nTidak ada jalur koneksi yang tersedia"));
-                    exploreTextBlock.Inlines.Add(new Run("\nAnda harus memulai koneksi baru itu sendiri"));
+                    text = new Run("\n\nNama akun : " + currentAccount + " dan " + currentTargetFriend);
+                    text.Style = System.Windows.Application.Current.TryFindResource("VigaFont") as System.Windows.Style;
+                    exploreTextBlock.Inlines.Add(text);
+                    text = new Run("\n\nTidak ada jalur koneksi yang tersedia");
+                    text.Style = System.Windows.Application.Current.TryFindResource("VigaFont") as System.Windows.Style;
+                    exploreTextBlock.Inlines.Add(text);
+                    text = new Run("\nAnda harus memulai koneksi baru itu sendiri");
+                    text.Style = System.Windows.Application.Current.TryFindResource("VigaFont") as System.Windows.Style;
+                    exploreTextBlock.Inlines.Add(text);
                 }
 
                 // Merender ulang komponen XAML exploreCanvas
@@ -139,7 +183,7 @@ namespace Tubes2_App
                 System.Windows.Controls.Image myImage3 = new System.Windows.Controls.Image();
                 myImage3.Source = null;
 
-                MakeGraph(filename);
+                MakeGraph(filename, false);
 
                 string path = Environment.CurrentDirectory;
                 BitmapImage bi3 = new BitmapImage();
@@ -183,53 +227,117 @@ namespace Tubes2_App
             }
         }
 
-        private void MakeGraph(string filename)
+        private void MakeGraph(string filename, bool isExploreGraph)
         {
-            // Create Graph Object
-            Graph graph = new Graph("graph");
-
-
-            // Create Graph Content
-            for (int i = 1; i < lines.Length; i++)
+            if(!isExploreGraph)
             {
-                string source = lines[i][0].ToString();
-                string dest = lines[i][2].ToString();
+                // Create Graph Object
+                Graph graph = new Graph("graph");
 
-                // Styling Graph
-                var edge = graph.AddEdge(source, dest);
-                edge.Attr.ArrowheadAtSource = ArrowStyle.None;
-                edge.Attr.ArrowheadAtTarget = ArrowStyle.None;
-                Node src = graph.FindNode(source);
-                Node target = graph.FindNode(dest);
-                src.Attr.Shape = Shape.Circle;
-                target.Attr.Shape = Shape.Circle;
-                src.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PeachPuff;
-                target.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PeachPuff;
-                src.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
-                target.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
-                edge.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
+                // Create Graph Content
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    string source = lines[i][0].ToString();
+                    string dest = lines[i][2].ToString();
 
-                // Menambah akun unik ke uniqueAccounts
-                uniqueAccounts.Add(source);
-                uniqueAccounts.Add(dest);
+                    // Styling Graph
+                    var edge = graph.AddEdge(source, dest);
+                    edge.Attr.ArrowheadAtSource = ArrowStyle.None;
+                    edge.Attr.ArrowheadAtTarget = ArrowStyle.None;
+                    Node src = graph.FindNode(source);
+                    Node target = graph.FindNode(dest);
+                    src.Attr.Shape = Shape.Circle;
+                    target.Attr.Shape = Shape.Circle;
+                    src.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PeachPuff;
+                    target.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PeachPuff;
+                    src.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
+                    target.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
+                    edge.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
+
+                    // Menambah akun unik ke uniqueAccounts
+                    uniqueAccounts.Add(source);
+                    uniqueAccounts.Add(dest);
+                }
+
+                // Create Graph Image
+                Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(graph);
+                renderer.CalculateLayout();
+                graph.Attr.BackgroundColor = Microsoft.Msagl.Drawing.Color.Transparent;
+                int width = 200;
+                graphBitmap = new Bitmap(width, (int)(graph.Height *
+                (width / graph.Width)), System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+                renderer.Render(graphBitmap);
+
+                Bitmap cloneBitmap = (Bitmap)graphBitmap.Clone();
+
+                string outputFileName = "graph-" + filename + ".png";
+                // string outputFileName = "graph.png";
+
+                cloneBitmap.Save(outputFileName);
+                cloneBitmap.Dispose();
             }
+            else
+            {
+                // Create Graph Object
+                Graph graph = new Graph("graph");
 
-            // Create Graph Image
-            Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(graph);
-            renderer.CalculateLayout();
-            graph.Attr.BackgroundColor = Microsoft.Msagl.Drawing.Color.Transparent;
-            int width = 200;
-            graphBitmap = new Bitmap(width, (int)(graph.Height *
-            (width / graph.Width)), System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
-            renderer.Render(graphBitmap);
+                // Create Graph Content
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    string source = lines[i][0].ToString();
+                    string dest = lines[i][2].ToString();
 
-            Bitmap cloneBitmap = (Bitmap)graphBitmap.Clone();
+                    // Styling Graph
+                    var edge = graph.AddEdge(source, dest);
+                    edge.Attr.ArrowheadAtSource = ArrowStyle.None;
+                    edge.Attr.ArrowheadAtTarget = ArrowStyle.None;
+                    Node src = graph.FindNode(source);
+                    Node target = graph.FindNode(dest);
+                    src.Attr.Shape = Shape.Circle;
+                    target.Attr.Shape = Shape.Circle;
 
-            string outputFileName = "graph-" + filename + ".png";
-            // string outputFileName = "graph.png";
+                    if(exploreRoute.Contains(source))
+                    {
+                        src.Attr.FillColor = Microsoft.Msagl.Drawing.Color.LightPink;
+                        src.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
+                    }
+                    else
+                    {
+                        src.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PeachPuff;
+                        src.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
+                    }
 
-            cloneBitmap.Save(outputFileName);
-            cloneBitmap.Dispose();
+                    if (exploreRoute.Contains(dest))
+                    {
+                        target.Attr.FillColor = Microsoft.Msagl.Drawing.Color.LightPink;
+                        target.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
+                    }
+                    else
+                    {
+                        target.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PeachPuff;
+                        target.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
+                    }
+                    
+                    edge.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
+                }
+
+                // Create Graph Image
+                Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(graph);
+                renderer.CalculateLayout();
+                graph.Attr.BackgroundColor = Microsoft.Msagl.Drawing.Color.Transparent;
+                int width = 150;
+                graphBitmap = new Bitmap(width, (int)(graph.Height *
+                (width / graph.Width)), System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+                renderer.Render(graphBitmap);
+
+                Bitmap cloneBitmap = (Bitmap)graphBitmap.Clone();
+
+                string outputFileName = "exploreGraph.png";
+                // string outputFileName = "graph.png";
+
+                cloneBitmap.Save(outputFileName);
+                cloneBitmap.Dispose();
+            }
         }
 
         private void handleUpdateComboBox()
@@ -288,7 +396,8 @@ namespace Tubes2_App
         private void Friend_Recommendation()
         {
             // Mencetak judul
-            Run text = new Run("Friend Recommendations for " + currentAccount);
+            Run text;
+            text = new Run("\nFriend Recommendations for " + currentAccount);
             var bc = new BrushConverter();
             text.Foreground = (System.Windows.Media.Brush)bc.ConvertFrom("#FF522E92");
             text.Style = System.Windows.Application.Current.TryFindResource("VigaFont") as System.Windows.Style;
@@ -347,10 +456,12 @@ namespace Tubes2_App
             foreach (string friendRecommendation in sortedFriendRecommendations)
             {
                 friendsTextBlock = new TextBlock();
+                friendsTextBlock.TextAlignment = TextAlignment.Center;
                 Border friendsBorder = new Border();
                 friendsBorder.CornerRadius = new CornerRadius(20);
-                friendsBorder.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#FF522E92");
-                friendsBorder.Background.Opacity = 0.2;
+                //friendsTextBlock.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#FF522E92");
+                //friendsTextBlock.Background.Opacity = 0.2;
+                //friendsTextBlock.Margin = new Thickness(0, 10, 0, 10);
                 //friendsTextBlock = new TextBlock();
                 //for(int a=0;a<b;a++)
                 //{
@@ -360,13 +471,26 @@ namespace Tubes2_App
                 {
                     friendsTextBlock.Inlines.Add(new Run("\n"));
                 }
-                friendsTextBlock.Inlines.Add(new Run("\n\nNama akun : " + friendRecommendation));
-                friendsTextBlock.Inlines.Add(new Run("\n" + mutualConnections[friendRecommendation].Count + " mutual friends :"));
+                text = new Run("\n\n\nNama akun : " + friendRecommendation);
+                text.Style = System.Windows.Application.Current.TryFindResource("VigaFont") as System.Windows.Style;
+                friendsTextBlock.Inlines.Add(text);
+                text = new Run("\n" + mutualConnections[friendRecommendation].Count + " mutual friends : ");
+                text.Style = System.Windows.Application.Current.TryFindResource("VigaFont") as System.Windows.Style;
+                friendsTextBlock.Inlines.Add(text);
                 for (int k = 0; k < mutualConnections[friendRecommendation].Count; k++)
                 {
-                    friendsTextBlock.Inlines.Add(new Run("\n" + mutualConnections[friendRecommendation][k]));
+                    if(k != 0)
+                    {
+                        text = new Run(", " + mutualConnections[friendRecommendation][k]);
+                    }
+                    else
+                    {
+                        text = new Run("" + mutualConnections[friendRecommendation][k]);
+                    }
+                    text.Style = System.Windows.Application.Current.TryFindResource("VigaFont") as System.Windows.Style;
+                    friendsTextBlock.Inlines.Add(text);
                 }
-                currentSpaceIncrement = currentSpaceIncrement + mutualConnections[friendRecommendation].Count + 3;
+                currentSpaceIncrement = currentSpaceIncrement + 4;
                 //friendsBorder.Child = friendsTextBlock;
                 friendCanvas.Children.Add(friendsTextBlock);
             }
