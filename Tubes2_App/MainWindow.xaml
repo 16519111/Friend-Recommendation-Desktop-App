@@ -85,10 +85,10 @@
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="150"/>
-                            <RowDefinition Height="300"/>
+                            <RowDefinition Height="400"/>
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top" Width="312" Name="exploreCanvas"/>
-                        <Grid Grid.Row="1" HorizontalAlignment="Center" Height="300" Margin="0,0,0,0" VerticalAlignment="Top" Width="312" Name="exploreGraph"/>
+                        <Grid Grid.Row="1" HorizontalAlignment="Center" Height="400" Margin="0,0,0,0" VerticalAlignment="Top" Width="312" Name="exploreGraph"/>
                     </Grid>
                 </Grid>
             </Grid>
