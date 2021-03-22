@@ -29,6 +29,9 @@ namespace Tubes2_App
         TextBlock exploreTextBlock;
         bool DFSSolution;
         string selectedRadio;
+        string currentFilename;
+        int fileOpenCount;
+        int searchingCount;
 
         // Constructor
         public MainWindow()
@@ -39,6 +42,9 @@ namespace Tubes2_App
             friendsTextBlock = new TextBlock();
             exploreTextBlock = new TextBlock();
             descriptionTextBlock.TextAlignment = TextAlignment.Center;
+            currentFilename = "";
+            fileOpenCount = 0;
+            searchingCount = 0;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -77,7 +83,7 @@ namespace Tubes2_App
                 exploreTextBlock.Inlines.Add(text);
                 if (isExplorable)
                 {
-                    
+
                     text = new Run("\n\nNama akun : " + currentAccount + " dan " + currentTargetFriend);
                     text.Style = System.Windows.Application.Current.TryFindResource("VigaFont") as System.Windows.Style;
                     exploreTextBlock.Inlines.Add(text);
@@ -101,7 +107,8 @@ namespace Tubes2_App
                     }
 
                     // Draw Explore Graph
-                    MakeGraph("", true);
+                    searchingCount++;
+                    MakeGraph(currentFilename + "-" + searchingCount.ToString(), true);  // TODO : Fix output
 
                     System.Windows.Controls.Image myImage3 = new System.Windows.Controls.Image();
                     myImage3.Source = null;
@@ -109,7 +116,7 @@ namespace Tubes2_App
                     string path = Environment.CurrentDirectory;
                     BitmapImage bi3 = new BitmapImage();
                     bi3.BeginInit();
-                    bi3.UriSource = new Uri(@path + ("/exploreGraph.png"), UriKind.Absolute);
+                    bi3.UriSource = new Uri(@path + ("/explore-" + currentFilename + "-" + searchingCount.ToString() + ".png"), UriKind.Absolute); // TODO : Fix
                     bi3.EndInit();
                     myImage3.Stretch = Stretch.None;
                     myImage3.Source = bi3;
@@ -173,7 +180,9 @@ namespace Tubes2_App
 
                 // Get directory file .txt yang dipilih
                 string sFileName = fileDialog.FileName;
-                string filename = sFileName.Substring(sFileName.LastIndexOf('\\') + 1).Replace(".txt", "");
+                currentFilename = sFileName.Substring(sFileName.LastIndexOf('\\') + 1).Replace(".txt", "");
+                fileOpenCount++;
+                currentFilename = currentFilename + "-" + fileOpenCount.ToString();
 
                 // Baca line per line kemudian dimasukkan ke array of string lines
                 lines = System.IO.File.ReadAllLines(@sFileName);
@@ -183,12 +192,12 @@ namespace Tubes2_App
                 System.Windows.Controls.Image myImage3 = new System.Windows.Controls.Image();
                 myImage3.Source = null;
 
-                MakeGraph(filename, false);
+                MakeGraph(currentFilename, false);
 
                 string path = Environment.CurrentDirectory;
                 BitmapImage bi3 = new BitmapImage();
                 bi3.BeginInit();
-                bi3.UriSource = new Uri(@path + ("/graph-" + filename + ".png"), UriKind.Absolute);
+                bi3.UriSource = new Uri(@path + ("/graph-" + currentFilename + ".png"), UriKind.Absolute); // TODO : Unique generator
                 bi3.EndInit();
                 myImage3.Stretch = Stretch.None;
                 myImage3.Source = bi3;
@@ -317,7 +326,7 @@ namespace Tubes2_App
                         target.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PeachPuff;
                         target.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
                     }
-                    
+
                     edge.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
                 }
 
@@ -332,7 +341,7 @@ namespace Tubes2_App
 
                 Bitmap cloneBitmap = (Bitmap)graphBitmap.Clone();
 
-                string outputFileName = "exploreGraph.png";
+                string outputFileName = "explore-" + filename + ".png";
                 // string outputFileName = "graph.png";
 
                 cloneBitmap.Save(outputFileName);
@@ -355,7 +364,7 @@ namespace Tubes2_App
 
         private void Choose_Account_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(Choose_Account_ComboBox.SelectedItem != null) { 
+            if(Choose_Account_ComboBox.SelectedItem != null) {
             // Logic untuk handleSelectionChange (event) Choose_Account
                 if(lastIndexCurrentTargetFriend >= 0)
                 {
@@ -381,7 +390,7 @@ namespace Tubes2_App
 
         private void Explore_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(Explore_ComboBox.SelectedItem != null) { 
+            if(Explore_ComboBox.SelectedItem != null) {
                 // Logic untuk handleSelectionChange (event) Explore
                 if (lastIndexCurrentAccount >= 0)
                 {
@@ -494,8 +503,8 @@ namespace Tubes2_App
                 //friendsBorder.Child = friendsTextBlock;
                 friendCanvas.Children.Add(friendsTextBlock);
             }
-            
-            
+
+
         }
 
         private bool BFS_Explore()
