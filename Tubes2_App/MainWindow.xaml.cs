@@ -167,6 +167,7 @@ namespace Tubes2_App
                 friendCanvas.Children.Clear();
                 exploreCanvas.Children.Clear();
                 graphCanvas.Children.Clear();
+                exploreGraph.Children.Clear();
                 uniqueAccounts.Clear();
                 selectedRadio = "";
                 currentAccount = null;
@@ -220,8 +221,9 @@ namespace Tubes2_App
             adjacencyList = new Dictionary<string, List<string>>();
             for (int i=1;i<countLines;i++)
             {
-                string source = lines[i][0].ToString();
-                string dest = lines[i][2].ToString();
+                string[] splitLine = lines[i].ToString().Split(' ');
+                string source = splitLine[0];
+                string dest = splitLine[1];
 
                 if (!adjacencyList.ContainsKey(source))
                 {
@@ -246,8 +248,9 @@ namespace Tubes2_App
                 // Create Graph Content
                 for (int i = 1; i < lines.Length; i++)
                 {
-                    string source = lines[i][0].ToString();
-                    string dest = lines[i][2].ToString();
+                    string[] splitLine = lines[i].ToString().Split(' ');
+                    string source = splitLine[0];
+                    string dest = splitLine[1];
 
                     // Styling Graph
                     var edge = graph.AddEdge(source, dest);
@@ -293,8 +296,9 @@ namespace Tubes2_App
                 // Create Graph Content
                 for (int i = 1; i < lines.Length; i++)
                 {
-                    string source = lines[i][0].ToString();
-                    string dest = lines[i][2].ToString();
+                    string[] splitLine = lines[i].ToString().Split(' ');
+                    string source = splitLine[0];
+                    string dest = splitLine[1];
 
                     // Styling Graph
                     var edge = graph.AddEdge(source, dest);

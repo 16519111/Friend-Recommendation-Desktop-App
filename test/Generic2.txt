@@ -1,14 +1,14 @@
 13
-D F
+DE F
 B C
 F H
 E H
 A B
 A C
-A D
+A DE
 B E
 B F
 C F
 C G
-D G
+DE G
 E F
