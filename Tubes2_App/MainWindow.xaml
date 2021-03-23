@@ -60,8 +60,8 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Margin="0,30,0,0">
                     <TextBlock HorizontalAlignment="Center" Height="20" Margin="0,0,0,0" TextWrapping="Wrap" Text="How would you find your true friends?" VerticalAlignment="Top" Width="229" Foreground="#FF522E92" TextAlignment="Center" Style="{StaticResource VigaFont}"/>
-                    <RadioButton Content="DFS" HorizontalAlignment="Center" Height="20" Margin="70,20,0,0" VerticalAlignment="Top" Width="50" Checked="RadioButton_Checked" RenderTransformOrigin="0.108,0.5" Foreground="#FF673ab7" FontWeight="Bold" Opacity="0.8" Name="DFS_Radio"/>
-                    <RadioButton Content="BFS" HorizontalAlignment="Center" Height="20" Margin="0,20,70,0" VerticalAlignment="Top" Width="43" Checked="RadioButton_Checked_1" Foreground="#FF673ab7" FontWeight="Bold" Opacity="0.8" Name="BFS_Radio"/>
+                    <RadioButton Content="DFS" HorizontalAlignment="Center" Height="20" Margin="70,20,0,0" VerticalAlignment="Top" Width="50" Checked="DFS_Checked" RenderTransformOrigin="0.108,0.5" Foreground="#FF673ab7" FontWeight="Bold" Opacity="0.8" Name="DFS_Radio"/>
+                    <RadioButton Content="BFS" HorizontalAlignment="Center" Height="20" Margin="0,20,70,0" VerticalAlignment="Top" Width="50" Checked="BFS_Checked" Foreground="#FF673ab7" FontWeight="Bold" Opacity="0.8" Name="BFS_Radio"/>
                 </Grid>
                 <Grid Grid.Row="1" Margin="0,0,0,0">
                     <TextBlock HorizontalAlignment="Center" Margin="0,0,0,0" TextWrapping="Wrap" Text="Which person to stalk?" Width="133" Foreground="#FF522E92" Style="{StaticResource VigaFont}" TextAlignment="Center"/>
@@ -75,7 +75,7 @@
                 <Grid Grid.Row="4" Margin="0,0,0,0">
                     <ComboBox HorizontalAlignment="Center" Height="20" Margin="0,0,0,0" VerticalAlignment="Top" Width="76" Name="Explore_ComboBox" SelectionChanged="Explore_ComboBox_SelectionChanged"/>
                 </Grid>
-                <Button Grid.Row="5" Content="Search" HorizontalAlignment="Center" Height="25" Margin="0,10,0,0" VerticalAlignment="Top" Width="61" Click="Button_Click" Background="#FFFF95D6" Foreground="White" BorderBrush="{x:Null}" Opacity="0.8" Style="{StaticResource VigaFont}"/>
+                <Button Grid.Row="5" Content="Search" HorizontalAlignment="Center" Height="25" Margin="0,10,0,0" VerticalAlignment="Top" Width="61" Click="Search_Click" Background="#FFFF95D6" Foreground="White" BorderBrush="{x:Null}" Opacity="0.8" Style="{StaticResource VigaFont}"/>
                 <Grid Grid.Row="6">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>

@@ -47,7 +47,7 @@ namespace Tubes2_App
             searchingCount = 0;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Search_Click(object sender, RoutedEventArgs e)
         {
             bool isExplorable;
 
@@ -144,21 +144,22 @@ namespace Tubes2_App
             }
         }
 
-        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        private void DFS_Checked(object sender, RoutedEventArgs e)
         {
             selectedRadio = "DFS";
         }
 
-        private void RadioButton_Checked_1(object sender, RoutedEventArgs e)
+        private void BFS_Checked(object sender, RoutedEventArgs e)
         {
             selectedRadio = "BFS";
         }
 
         private void Browse_File_Button(object sender, RoutedEventArgs e)
         {
+            // Mempersiapkan pembacaan input .txt
             System.Windows.Forms.OpenFileDialog fileDialog = new System.Windows.Forms.OpenFileDialog();
-            fileDialog.DefaultExt = ".txt"; // Required file extension
-            fileDialog.Filter = "Text documents (.txt)|*.txt"; // Optional file extensions
+            fileDialog.DefaultExt = ".txt";
+            fileDialog.Filter = "Text documents (.txt)|*.txt";
             fileDialog.Multiselect = false;
 
             if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
