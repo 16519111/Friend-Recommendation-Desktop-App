@@ -264,7 +264,8 @@ namespace Tubes2_App
                     target.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PeachPuff;
                     src.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
                     target.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
-                    edge.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
+                    edge.Attr.Color = Microsoft.Msagl.Drawing.Color.GhostWhite;
+                    edge.Attr.Weight = 700;
 
                     // Menambah akun unik ke uniqueAccounts
                     uniqueAccounts.Add(source);
@@ -309,7 +310,7 @@ namespace Tubes2_App
                     src.Attr.Shape = Shape.Circle;
                     target.Attr.Shape = Shape.Circle;
 
-                    if(exploreRoute.Contains(source))
+                    if (exploreRoute.Contains(source))
                     {
                         src.Attr.FillColor = Microsoft.Msagl.Drawing.Color.LightPink;
                         src.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
@@ -331,7 +332,14 @@ namespace Tubes2_App
                         target.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
                     }
 
-                    edge.Attr.Color = Microsoft.Msagl.Drawing.Color.Purple;
+                    if (exploreRoute.Contains(source) && exploreRoute.Contains(dest))
+                    {
+                        edge.Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
+                    }
+                    else
+                    {
+                        edge.Attr.Color = Microsoft.Msagl.Drawing.Color.LightPink;
+                    }
                 }
 
                 // Create Graph Image
