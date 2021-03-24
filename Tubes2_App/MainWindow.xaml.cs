@@ -106,18 +106,20 @@ namespace Tubes2_App
                         }
                     }
 
-                    // Draw Explore Graph
+                    // Menggambar Explore Graph
                     searchingCount++;
-                    MakeGraph(currentFilename + "-" + searchingCount.ToString(), true);  // TODO : Fix output
-
+                    MakeGraph(currentFilename + "-" + searchingCount.ToString(), true);
                     System.Windows.Controls.Image myImage3 = new System.Windows.Controls.Image();
                     myImage3.Source = null;
 
+                    // Setting Directory
                     string path = Environment.CurrentDirectory;
                     BitmapImage bi3 = new BitmapImage();
                     bi3.BeginInit();
                     bi3.UriSource = new Uri(@path + ("/explore-" + currentFilename + "-" + searchingCount.ToString() + ".png"), UriKind.Absolute); // TODO : Fix
                     bi3.EndInit();
+
+                    // Setting Image Attributes
                     myImage3.Stretch = Stretch.None;
                     myImage3.Source = bi3;
                     myImage3.Width = 200;
@@ -189,11 +191,10 @@ namespace Tubes2_App
                 // Baca line per line kemudian dimasukkan ke array of string lines
                 lines = System.IO.File.ReadAllLines(@sFileName);
 
-                // Memunculkan dialog untuk testing
-                // System.Windows.Forms.MessageBox.Show(filename, "Error Title", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 System.Windows.Controls.Image myImage3 = new System.Windows.Controls.Image();
                 myImage3.Source = null;
 
+                // Membuat Graph yang disimpan sebagai .png
                 MakeGraph(currentFilename, false);
 
                 string path = Environment.CurrentDirectory;
@@ -209,6 +210,7 @@ namespace Tubes2_App
                 myImage3.VerticalAlignment = System.Windows.VerticalAlignment.Top;
                 graphCanvas.Children.Add(myImage3);
 
+                // Membuat Adjancency List berdasarkan input .txt
                 generateAdjacencyList();
 
                 // handler untuk event ChangeComboBox
@@ -220,6 +222,9 @@ namespace Tubes2_App
         {
             int countLines = lines.Length;
             adjacencyList = new Dictionary<string, List<string>>();
+
+            // Membaca dan mempersiapkan adjancency list dengan membaca input
+            // secara baris per baris.
             for (int i=1;i<countLines;i++)
             {
                 string[] splitLine = lines[i].ToString().Split(' ');
@@ -241,11 +246,11 @@ namespace Tubes2_App
 
         private void MakeGraph(string filename, bool isExploreGraph)
         {
-            if(!isExploreGraph)
-            {
-                // Create Graph Object
-                Graph graph = new Graph("graph");
+            // Membuat Objek Graph
+            Graph graph = new Graph("graph");
 
+            if (!isExploreGraph)
+            {
                 // Create Graph Content
                 for (int i = 1; i < lines.Length; i++)
                 {
@@ -292,9 +297,6 @@ namespace Tubes2_App
             }
             else
             {
-                // Create Graph Object
-                Graph graph = new Graph("graph");
-
                 // Create Graph Content
                 for (int i = 1; i < lines.Length; i++)
                 {
@@ -378,7 +380,7 @@ namespace Tubes2_App
         private void Choose_Account_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(Choose_Account_ComboBox.SelectedItem != null) {
-            // Logic untuk handleSelectionChange (event) Choose_Account
+                // Logic untuk handleSelectionChange (event) Choose_Account
                 if(lastIndexCurrentTargetFriend >= 0)
                 {
                     Explore_ComboBox.Items.Insert(lastIndexCurrentTargetFriend, currentAccount);
@@ -389,14 +391,13 @@ namespace Tubes2_App
 
                 friendCanvas.Children.Clear();
                 exploreCanvas.Children.Clear();
-                //var bc = new BrushConverter();
-                //friendCanvas.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#FFB99AFF");
-                //friendCanvas.Background.Opacity = 0.5;
                 friendsTextBlock.Inlines.Clear();
                 descriptionTextBlock.Inlines.Clear();
                 descriptionTextBlock.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
                 exploreTextBlock.Inlines.Clear();
                 exploreTextBlock.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+
+                // Memanggil kembali rekomendasi teman.
                 Friend_Recommendation();
             }
         }
@@ -481,14 +482,7 @@ namespace Tubes2_App
                 friendsTextBlock.TextAlignment = TextAlignment.Center;
                 Border friendsBorder = new Border();
                 friendsBorder.CornerRadius = new CornerRadius(20);
-                //friendsTextBlock.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#FF522E92");
-                //friendsTextBlock.Background.Opacity = 0.2;
-                //friendsTextBlock.Margin = new Thickness(0, 10, 0, 10);
-                //friendsTextBlock = new TextBlock();
-                //for(int a=0;a<b;a++)
-                //{
-                //    friendsTextBlock.Inlines.Add(new Run("\n\n"));
-                //}
+
                 for (int k = 0; k < currentSpaceIncrement; k++)
                 {
                     friendsTextBlock.Inlines.Add(new Run("\n"));
