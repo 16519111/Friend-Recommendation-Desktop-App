@@ -10,6 +10,12 @@ Algoritma *DFS* adalah algoritma yang pencariannya dilakukan pada satu node dala
 1. Visual Studio 2019 (https://visualstudio.microsoft.com/vs/)
 
 ## Cara Menggunakan
+1. Pilih graf pertemanan yang hendak diselesaikan dengan menekan tombol Browse di sebelah kiri atas. 
+2. Pemilihan file di sini telah di-_restrict_ ke file yang berekstensi .txt dan pengguna hanya dapat memilih 1 file saja.
+3. Pilih opsi BFS atau DFS pada _radio button_ yang ada.
+4. Pilih akun pada combobox berlabel “Which person to stalk?” yang telah tersedia. Pengguna hanya dapat memilih satu akun pada suatu waktu. 
+5. Pilih akun pada combobox berlabel “Explore Friends With” yang telah tersedia. Pengguna hanya dapat memilih satu akun pada suatu waktu. 
+6. Tekan search dan hasil akan keluar secara tulisan pada bagian kiri bawah dan bagian kanan bawah dengan tampilan graf
 
 
 ## *Author(s)*
