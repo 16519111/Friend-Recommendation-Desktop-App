@@ -32,7 +32,7 @@
                     <TextBlock HorizontalAlignment="Center" Height="20" Margin="0,32,0,0" TextWrapping="Wrap" Text="FRIENDSHIP GRAPH" VerticalAlignment="Top" Width="269" RenderTransformOrigin="1.557,0.5" Style="{StaticResource VigaFont}" TextAlignment="Center" Foreground="#FF522E92"/>
                     <Button Content="Browse" HorizontalAlignment="Center" Height="20" Margin="0,57,0,0" VerticalAlignment="Top" Width="59" Click="Browse_File_Button" Name="BrowseButton" RenderTransformOrigin="0.49,0.7" ScrollViewer.HorizontalScrollBarVisibility="Auto" Background="#FFFF95D6" Foreground="White" BorderBrush="{x:Null}" Opacity="0.8" Style="{StaticResource VigaFont}"/>
                 </Grid>
-                <Grid Grid.Row="3" HorizontalAlignment="Center" Height="500" Margin="0,20,0,0" VerticalAlignment="Top" Width="315" Name="graphCanvas"/>
+                <Grid Grid.Row="3" HorizontalAlignment="Center" Height="500" Margin="0,20,0,0" VerticalAlignment="Top" Width="600" Name="graphCanvas"/>
             </Grid>
             <Ellipse Fill="#FF9B6DFF" HorizontalAlignment="Left" Height="185" Margin="-5,724,0,-38.6" VerticalAlignment="Top" Width="190" Opacity="0.4"/>
             <Ellipse Fill="#FF9B6DFF" HorizontalAlignment="Left" Height="185" Margin="112,707,0,-21.6" VerticalAlignment="Top" Width="190" Opacity="0.4"/>
@@ -50,30 +50,30 @@
             </Grid.Background>
             <Grid Margin="0,20,0,0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="80"/>
                     <RowDefinition Height="20"/>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="20"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="50"/>
                     <RowDefinition Height="60"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0" Margin="0,30,0,0">
+                <Grid Grid.Row="0" Margin="0,0,0,0">
+                    <TextBlock HorizontalAlignment="Center" Margin="0,0,0,0" TextWrapping="Wrap" Text="Which person to stalk?" Width="133" Foreground="#FF522E92" Style="{StaticResource VigaFont}" TextAlignment="Center"/>
+                </Grid>
+                <Grid Grid.Row="1" Margin="0,0,0,0">
+                    <ComboBox HorizontalAlignment="Center" Height="20" Margin="0,0,0,0" VerticalAlignment="Top" Width="76" Name="Choose_Account_ComboBox" SelectionChanged="Choose_Account_ComboBox_SelectionChanged" RenderTransformOrigin="0.808,0.57"/>
+                </Grid>
+                <Grid Grid.Row="2" Margin="0,0,0,0">
+                    <TextBlock HorizontalAlignment="Center" Height="20" Margin="0,0,0,0" TextWrapping="Wrap" Text="Explore Friends With" VerticalAlignment="Top" Width="133" Foreground="#FF522E92" Style="{StaticResource VigaFont}" TextAlignment="Center"/>
+                </Grid>
+                <Grid Grid.Row="3" Margin="0,0,0,0">
+                    <ComboBox HorizontalAlignment="Center" Height="20" Margin="0,0,0,0" VerticalAlignment="Top" Width="76" Name="Explore_ComboBox" SelectionChanged="Explore_ComboBox_SelectionChanged"/>
+                </Grid>
+                <Grid Grid.Row="4" Margin="0,10,0,0">
                     <TextBlock HorizontalAlignment="Center" Height="20" Margin="0,0,0,0" TextWrapping="Wrap" Text="How would you find your true friends?" VerticalAlignment="Top" Width="229" Foreground="#FF522E92" TextAlignment="Center" Style="{StaticResource VigaFont}"/>
                     <RadioButton Content="DFS" HorizontalAlignment="Center" Height="20" Margin="70,20,0,0" VerticalAlignment="Top" Width="50" Checked="DFS_Checked" RenderTransformOrigin="0.108,0.5" Foreground="#FF673ab7" FontWeight="Bold" Opacity="0.8" Name="DFS_Radio"/>
                     <RadioButton Content="BFS" HorizontalAlignment="Center" Height="20" Margin="0,20,70,0" VerticalAlignment="Top" Width="50" Checked="BFS_Checked" Foreground="#FF673ab7" FontWeight="Bold" Opacity="0.8" Name="BFS_Radio"/>
-                </Grid>
-                <Grid Grid.Row="1" Margin="0,0,0,0">
-                    <TextBlock HorizontalAlignment="Center" Margin="0,0,0,0" TextWrapping="Wrap" Text="Which person to stalk?" Width="133" Foreground="#FF522E92" Style="{StaticResource VigaFont}" TextAlignment="Center"/>
-                </Grid>
-                <Grid Grid.Row="2" Margin="0,0,0,0">
-                    <ComboBox HorizontalAlignment="Center" Height="20" Margin="0,0,0,0" VerticalAlignment="Top" Width="76" Name="Choose_Account_ComboBox" SelectionChanged="Choose_Account_ComboBox_SelectionChanged" RenderTransformOrigin="0.808,0.57"/>
-                </Grid>
-                <Grid Grid.Row="3" Margin="0,0,0,0">
-                    <TextBlock HorizontalAlignment="Center" Height="20" Margin="0,0,0,0" TextWrapping="Wrap" Text="Explore Friends With" VerticalAlignment="Top" Width="133" Foreground="#FF522E92" Style="{StaticResource VigaFont}" TextAlignment="Center"/>
-                </Grid>
-                <Grid Grid.Row="4" Margin="0,0,0,0">
-                    <ComboBox HorizontalAlignment="Center" Height="20" Margin="0,0,0,0" VerticalAlignment="Top" Width="76" Name="Explore_ComboBox" SelectionChanged="Explore_ComboBox_SelectionChanged"/>
                 </Grid>
                 <Button Grid.Row="5" Content="Search" HorizontalAlignment="Center" Height="25" Margin="0,10,0,0" VerticalAlignment="Top" Width="61" Click="Search_Click" Background="#FFFF95D6" Foreground="White" BorderBrush="{x:Null}" Opacity="0.8" Style="{StaticResource VigaFont}"/>
                 <Grid Grid.Row="6">

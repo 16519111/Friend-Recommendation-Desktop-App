@@ -59,7 +59,12 @@ namespace Tubes2_App
             exploreTextBlock.VerticalAlignment = VerticalAlignment.Top;
             exploreTextBlock.TextAlignment = TextAlignment.Center;
 
-            if (selectedRadio == "")
+            if (currentTargetFriend == null)
+            {
+                System.Windows.Forms.MessageBox.Show("Harap memilih akun target yang hendak dieksplorasi terlebih dahulu"
+                    , "Error Title", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            else if (selectedRadio == "")
             {
                 System.Windows.Forms.MessageBox.Show("Harap memilih DFS atau BFS terlebih dahulu"
                     , "Error Title", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -204,7 +209,7 @@ namespace Tubes2_App
                 bi3.EndInit();
                 myImage3.Stretch = Stretch.None;
                 myImage3.Source = bi3;
-                myImage3.Width = 200;
+                myImage3.Width = 600;
                 myImage3.Height = 500;
                 myImage3.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
                 myImage3.VerticalAlignment = System.Windows.VerticalAlignment.Top;
@@ -282,9 +287,26 @@ namespace Tubes2_App
                 Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(graph);
                 renderer.CalculateLayout();
                 graph.Attr.BackgroundColor = Microsoft.Msagl.Drawing.Color.Transparent;
-                int width = 200;
-                graphBitmap = new Bitmap(width, (int)(graph.Height *
-                (width / graph.Width)), System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+                int height = 500;
+                if (graph.Width > graph.Height && graph.Width > 400)
+                {
+                    height = 200;
+                }
+                else if (graph.Width / graph.Height > 1.3)
+                {
+                    height = 150;
+                }
+                else if (graph.Width / graph.Height > 1.5)
+                {
+                    height = 120;
+                }
+                else if (graph.Width * (height / graph.Height) > 500)
+                {
+                    height = 300;
+                }
+
+                graphBitmap = new Bitmap((int)(graph.Width *
+                (height / graph.Height)), height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
                 renderer.Render(graphBitmap);
 
                 Bitmap cloneBitmap = (Bitmap)graphBitmap.Clone();
@@ -349,9 +371,26 @@ namespace Tubes2_App
                 Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(graph);
                 renderer.CalculateLayout();
                 graph.Attr.BackgroundColor = Microsoft.Msagl.Drawing.Color.Transparent;
-                int width = 150;
-                graphBitmap = new Bitmap(width, (int)(graph.Height *
-                (width / graph.Width)), System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+                int height = 350;
+                if (graph.Width > graph.Height && graph.Width * (height / graph.Height) > 300)
+                {
+                    height = 160;
+                }
+                else if (graph.Width / graph.Height > 1.3)
+                {
+                    height = 75;
+                }
+                else if (graph.Width / graph.Height > 1.5)
+                {
+                    height = 100;
+                }
+                else if (graph.Width * (height / graph.Height) > 500)
+                {
+                    height = 200;
+                }
+
+                graphBitmap = new Bitmap((int)(graph.Width *
+                (height / graph.Height)), height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
                 renderer.Render(graphBitmap);
 
                 Bitmap cloneBitmap = (Bitmap)graphBitmap.Clone();
@@ -476,12 +515,21 @@ namespace Tubes2_App
             friendCanvas.Children.Add(descriptionTextBlock);
             // Mencetak Friend Recommendation ke layar
             int currentSpaceIncrement = 0;
+            if(sortedFriendRecommendations.Count == 0)
+            {
+                friendsTextBlock = new TextBlock();
+                friendsTextBlock.TextAlignment = TextAlignment.Center;
+
+                text = new Run("\n\n\nTidak ada rekomendasi teman untuk akun ini");
+                text.Style = System.Windows.Application.Current.TryFindResource("VigaFont") as System.Windows.Style;
+                friendsTextBlock.Inlines.Add(text);
+
+                friendCanvas.Children.Add(friendsTextBlock);
+            }
             foreach (string friendRecommendation in sortedFriendRecommendations)
             {
                 friendsTextBlock = new TextBlock();
                 friendsTextBlock.TextAlignment = TextAlignment.Center;
-                Border friendsBorder = new Border();
-                friendsBorder.CornerRadius = new CornerRadius(20);
 
                 for (int k = 0; k < currentSpaceIncrement; k++)
                 {
@@ -507,11 +555,8 @@ namespace Tubes2_App
                     friendsTextBlock.Inlines.Add(text);
                 }
                 currentSpaceIncrement = currentSpaceIncrement + 4;
-                //friendsBorder.Child = friendsTextBlock;
                 friendCanvas.Children.Add(friendsTextBlock);
             }
-
-
         }
 
         private bool BFS_Explore()
