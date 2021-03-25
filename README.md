@@ -1,5 +1,4 @@
 # Tugas Besar 2 - IF2211 - Strategi Algoritma
-# TubesStima01
 Tugas Besar Stima 2 - Fitur People You May Know Jejaring Sosial Facebook
 
 ## Penjelasan Singkat Algoritma *BFS* dan *DFS*
