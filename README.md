@@ -1,5 +1,4 @@
-# Tugas Besar 2 - IF2211 - Strategi Algoritma
-Tugas Besar Stima 2 - Fitur People You May Know Jejaring Sosial Facebook
+# Friend Recommendation Desktop App
 
 ## Penjelasan Singkat Algoritma *BFS* dan *DFS*
 Algoritma *BFS* adalah algoritma yang melakukan pencarian secara melebar yang mengunjungi simpul secara preorder yaitu mengunjungi suatu simpul kemudian mengunjungi semua simpul yang bertetangga dengan simpul tersebut terlebih dahulu. 
@@ -19,9 +18,7 @@ Algoritma *DFS* adalah algoritma yang pencariannya dilakukan pada satu node dala
 
 
 ## *Author(s)*
-1. Kelompok 30: mangga
-2. Anggota:
-    - 13519190 - Gergorius Dimas
-    - 13519199 - Christian Gunawan
-    - 13519214 - Taur Rizaldi Rahardjo
+Gregorius Dimas Baskara
+Christian Gunawan
+Tanur Rizaldi Rahardjo
 
